@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4 op een rij</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+
+      <h1 class="title">4 op een rij</h1>
+
+      <div class="status-bar">
+        <div class="player-info player1" id="player1-info">
+          <div class="disc-icon disc-red"></div>
+          <span id="player1-label">Speler 1</span>
+        </div>
+        <div id="status-message" class="status-message">Verbinden...</div>
+        <div class="player-info player2" id="player2-info">
+          <span id="player2-label">Speler 2</span>
+          <div class="disc-icon disc-yellow"></div>
+        </div>
+      </div>
+
+      <div class="board-area">
+
+        <div class="col-buttons">
+          <button class="col-btn" data-col="0">▼</button>
+          <button class="col-btn" data-col="1">▼</button>
+          <button class="col-btn" data-col="2">▼</button>
+          <button class="col-btn" data-col="3">▼</button>
+          <button class="col-btn" data-col="4">▼</button>
+        </div>
+
+        <!-- Canvas wrapper: twee canvassen op elkaar -->
+        <div class="canvas-wrapper">
+          <!-- Achterste canvas: achtergrond + schijfjes -->
+          <canvas id="discCanvas"></canvas>
+          <!-- Voorste canvas: blauw bord met gaten -->
+          <canvas id="boardCanvas"></canvas>
+        </div>
+
+      </div>
+
+      <button id="restartBtn" class="btn-restart" disabled>
+        ↺ Opnieuw spelen
+      </button>
+
+    </div>
+
+    <div id="overlay" class="overlay hidden">
+      <div class="overlay-card">
+        <div id="overlay-icon" class="overlay-icon"></div>
+        <h2 id="overlay-title"></h2>
+        <p id="overlay-subtitle"></p>
+        <button id="overlayRestartBtn" class="btn-restart">↺ Opnieuw spelen</button>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>

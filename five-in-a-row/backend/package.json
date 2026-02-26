@@ -1,0 +1,12 @@
+{
+  "name": "five-in-a-row-backend",
+  "version": "1.0.0",
+  "description": "Backend voor 5 op een rij spelletjestafel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stokvangen</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <div id="screen-waiting" class="screen active">
+      <h1>🪵 Stokvangen</h1>
+      <p id="waiting-msg">Wachten op spelers...</p>
+      <p id="player-count">Verbonden: 0 / 2</p>
+    </div>
+
+    <div id="screen-game" class="screen">
+      <div id="status-msg"></div>
+
+      <div id="game-row">
+        <div class="score-box" id="score-p1">
+          <span class="player-label">Speler 1</span>
+          <span class="score" id="score-p1-val">0</span>
+        </div>
+
+        <div id="play-area">
+          <div id="selectors-container"></div>
+          <div id="sticks-container"></div>
+        </div>
+
+        <div class="score-box" id="score-p2">
+          <span class="player-label">Speler 2</span>
+          <span class="score" id="score-p2-val">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-gameover" class="screen">
+      <h2 id="winner-msg"></h2>
+      <div id="final-scores"></div>
+      <button id="restart-btn">🔄 Opnieuw spelen</button>
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
