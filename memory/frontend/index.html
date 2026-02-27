@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🐾 Dieren Memory</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🐾 Dieren Memory</h1>
+
+    <div id="wacht-scherm" class="wacht-scherm">
+      <div class="wacht-inhoud">
+        <div class="wacht-emoji">⏳</div>
+        <p>Wachten op tweede speler...</p>
+        <p class="wacht-sub">Stuur de link naar je tegenstander:<br>
+          <strong>http://localhost:3001</strong>
+        </p>
+      </div>
+    </div>
+
+    <div id="spel-inhoud" class="verborgen">
+
+      <div class="spelers-bord">
+        <div class="speler-kaart" id="speler1-kaart">
+          <div class="speler-naam" id="speler1-naam">Speler 1</div>
+          <div class="speler-score" id="speler1-score">0</div>
+          <div class="beurt-indicator" id="speler1-beurt">🎮 Aan de beurt</div>
+        </div>
+        <div class="vs-teken">VS</div>
+        <div class="speler-kaart" id="speler2-kaart">
+          <div class="speler-naam" id="speler2-naam">Speler 2</div>
+          <div class="speler-score" id="speler2-score">0</div>
+          <div class="beurt-indicator" id="speler2-beurt">🎮 Aan de beurt</div>
+        </div>
+      </div>
+
+      <div class="stat-balk">
+        <div class="stat">
+          <span class="label">Pogingen</span>
+          <span class="waarde" id="pogingen">0</span>
+        </div>
+        <div class="stat">
+          <span class="label">Gevonden sets</span>
+          <span class="waarde" id="paren">0 / 12</span>
+        </div>
+      </div>
+
+      <div id="bericht" class="bericht verborgen"></div>
+
+      <div class="speelveld" id="speelveld"></div>
+
+      <button class="knop" onclick="nieuwSpel()">🔁 Nieuw Spel</button>
+    </div>
+  </div>
+
+  <div id="winnaar-overlay" class="winnaar-overlay verborgen">
+    <div class="winnaar-kaart">
+      <div class="winnaar-emoji">🏆</div>
+      <h2 id="winnaar-titel">Gewonnen!</h2>
+      <div id="eind-scores" class="eind-scores"></div>
+      <button class="knop" onclick="nieuwSpel()">🔁 Speel Opnieuw</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

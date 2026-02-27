@@ -1,0 +1,376 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.container {
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 620px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  letter-spacing: 2px;
+}
+
+/* Wacht scherm */
+.wacht-scherm {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 40px;
+  margin-top: 20px;
+}
+
+.wacht-emoji {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.15); }
+}
+
+.wacht-inhoud p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.wacht-sub {
+  font-size: 0.9rem !important;
+  opacity: 0.7;
+}
+
+/* Spelers bord */
+.spelers-bord {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.speler-kaart {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 12px 20px;
+  min-width: 130px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.speler-kaart.actief {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.12);
+}
+
+.speler-kaart.jij {
+  border-color: #667eea;
+}
+
+.speler-kaart.actief.jij {
+  border-color: #ffd700;
+}
+
+.speler-naam {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.speler-score {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.beurt-indicator {
+  font-size: 0.7rem;
+  margin-top: 6px;
+  color: #ffd700;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.speler-kaart.actief .beurt-indicator {
+  opacity: 1;
+}
+
+.vs-teken {
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: 0.4;
+}
+
+/* Stat balk */
+.stat-balk {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.stat {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 8px 18px;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.8;
+  margin-bottom: 2px;
+}
+
+.waarde {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+/* Bericht */
+.bericht {
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin-bottom: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: opacity 0.3s;
+}
+
+.bericht.verborgen { opacity: 0; pointer-events: none; }
+.bericht.match  { background: rgba(0,200,100,0.3);   border: 1px solid #00c864; color: #80ffbb; }
+.bericht.fout   { background: rgba(255,80,80,0.3);   border: 1px solid #ff5050; color: #ffaaaa; }
+.bericht.info   { background: rgba(100,150,255,0.3); border: 1px solid #6496ff; color: #c0d4ff; }
+
+/* ─── Speelveld ─────────────────────────────────────────────── */
+.speelveld {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin: 0 auto 20px auto;
+  max-width: 520px;
+}
+
+/* ─── Kaart wrapper ─────────────────────────────────────────── */
+.kaart {
+  aspect-ratio: 1;
+  cursor: pointer;
+  perspective: 800px;   /* diepte voor 3-D effect */
+}
+
+/* ─── Draaiende binnenkant ──────────────────────────────────── */
+.kaart-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+
+  /* vloeiende flip + subtiele schaalvergroting */
+  transition:
+    transform   0.55s cubic-bezier(0.45, 0.05, 0.55, 0.95),
+    box-shadow  0.55s ease;
+
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+}
+
+/* omgedraaid / gevonden → 180° rotatie */
+.kaart.omgedraaid .kaart-inner,
+.kaart.gevonden   .kaart-inner {
+  transform: rotateY(180deg);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+/* ─── Voor- en achterkant ───────────────────────────────────── */
+.kaart-voor,
+.kaart-achter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;   /* Safari */
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  /* zachte glans bovenaan */
+  overflow: hidden;
+}
+
+.kaart-voor::before,
+.kaart-achter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255,255,255,0.18) 0%,
+    rgba(255,255,255,0)    60%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Achterkant (verborgen) */
+.kaart-voor {
+  background: linear-gradient(135deg, #2d3561, #533483);
+  border-color: rgba(255,255,255,0.2);
+  font-size: 1.6rem;
+}
+
+.kaart-voor::after {
+  content: '🐾';
+  position: relative;   /* boven de ::before glans */
+}
+
+/* Voorkant (zichtbaar na flip) */
+.kaart-achter {
+  background: linear-gradient(135deg, #f0f4ff, #e2e8f0);
+  transform: rotateY(180deg);
+  color: #333;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 2.2rem;
+}
+
+.kaart-achter .dier-naam {
+  font-size: 0.58rem;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Gevonden kaart */
+.kaart.gevonden .kaart-achter {
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  border-color: #00c864;
+  border-width: 3px;
+}
+
+/* Joker */
+.kaart.joker .kaart-achter {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border-color: #ffd700;
+  border-width: 3px;
+  cursor: default;
+}
+
+/* ─── Hover effect (alleen klikbare kaarten) ────────────────── */
+.kaart:not(.gevonden):not(.omgedraaid):not(.joker):not(.geblokkeerd):hover .kaart-inner {
+  transform: rotateY(15deg) translateY(-4px) scale(1.04);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+}
+
+/* geblokkeerde kaart (niet jouw beurt) */
+.kaart.geblokkeerd {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* ─── Match-animatie: kort opflitsen ────────────────────────── */
+@keyframes matchFlits {
+  0%   { box-shadow: 0 0  0px  0px rgba(0,200,100,0);   }
+  40%  { box-shadow: 0 0 22px 10px rgba(0,200,100,0.8); }
+  100% { box-shadow: 0 0  8px  3px rgba(0,200,100,0.3); }
+}
+
+.kaart.gevonden .kaart-inner {
+  animation: matchFlits 0.6s ease forwards;
+}
+
+/* ─── Knop ──────────────────────────────────────────────────── */
+.knop {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+}
+
+.knop:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.6);
+}
+
+.knop:active { transform: translateY(0); }
+
+/* ─── Winnaar overlay ───────────────────────────────────────── */
+.winnaar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.winnaar-overlay.verborgen { display: none; }
+
+.winnaar-kaart {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 2px solid #ffd700;
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  max-width: 380px;
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.winnaar-emoji  { font-size: 5rem; margin-bottom: 16px; }
+.winnaar-kaart h2 { font-size: 2rem; color: #ffd700; margin-bottom: 16px; }
+
+.eind-scores { margin-bottom: 24px; }
+
+.score-rij {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.verborgen { display: none; }
+
+/* ─── Responsief ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  h1 { font-size: 1.8rem; }
+  .speelveld { gap: 6px; }
+  .kaart-achter { font-size: 1.6rem; }
+  .spelers-bord { gap: 8px; }
+  .speler-kaart { min-width: 100px; padding: 10px; }
+}
