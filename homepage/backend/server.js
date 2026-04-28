@@ -2,9 +2,10 @@
 // Express + Socket.io server op poort 8080
 // Beheert de spelkeuze tussen twee touchscreens
 
-const express = require('express');
-const http    = require('http');
-const path    = require('path');
+const express   = require('express');
+const http      = require('http');
+const path      = require('path');
+const rateLimit = require('express-rate-limit');
 const { Server } = require('socket.io');
 
 const app    = express();
@@ -13,18 +14,27 @@ const io     = new Server(server, { cors: { origin: '*' } });
 
 const PORT = 8080;
 
+// ─── Rate limiter voor de pagina-routes ──────────────────────────────────────
+// Beperkt verzoeken per IP om misbruik te voorkomen (lokale tafel: ruim ingesteld)
+const paginaLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minuut
+  max:      60,        // maximaal 60 verzoeken per minuut per IP
+  standardHeaders: true,
+  legacyHeaders:   false,
+});
+
 // ─── Statische bestanden serveren vanuit de frontend map ─────────────────────
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
 
 // Speler 1 scherm (linkerscherm)
-app.get('/player1', (req, res) => {
+app.get('/player1', paginaLimiter, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'player1.html'));
 });
 
 // Speler 2 scherm (rechterscherm)
-app.get('/player2', (req, res) => {
+app.get('/player2', paginaLimiter, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'player2.html'));
 });
 
@@ -69,6 +79,10 @@ let stemmen = {};
 // Bijhouden welke speler op welk spel heeft gestemd (spelerNummer -> spelId)
 let spelerStemmen = {};
 
+// Bijhouden wanneer een spel zijn EERSTE stem kreeg (voor gelijkstand-oplossing)
+let eersteSteminIndex = {}; // spelId -> volgorde van eerste stem (oplopend getal)
+let stemVolgordeIndex = 0;  // teller voor volgorde
+
 // Vlag voor wie-het-eerst-klikt modus (voorkomt dubbele navigatie)
 let eersteKlikVerwerkt = false;
 
@@ -76,21 +90,31 @@ let eersteKlikVerwerkt = false;
 function resetSelectie() {
   stemmen             = {};
   spelerStemmen       = {};
+  eersteSteminIndex   = {};
+  stemVolgordeIndex   = 0;
   eersteKlikVerwerkt  = false;
   SPELLEN.forEach(s => { stemmen[s.id] = 0; });
 }
 
 resetSelectie();
 
-// Bereken het spel met de meeste stemmen (geeft spelId of null terug)
+// Bereken het spel met de meeste stemmen.
+// Bij gelijkstand wint het spel dat als EERSTE een stem ontving.
 function berekenWinnaar() {
   let maxStemmen = 0;
   let winnaar    = null;
+  let winnaarVolgorde = Infinity;
 
   for (const [spelId, aantal] of Object.entries(stemmen)) {
-    if (aantal > maxStemmen) {
-      maxStemmen = aantal;
-      winnaar    = spelId;
+    const volgorde = eersteSteminIndex[spelId] ?? Infinity;
+
+    if (
+      aantal > maxStemmen ||
+      (aantal === maxStemmen && volgorde < winnaarVolgorde)
+    ) {
+      maxStemmen       = aantal;
+      winnaar          = spelId;
+      winnaarVolgorde  = volgorde;
     }
   }
 
@@ -126,6 +150,9 @@ io.on('connection', (socket) => {
     if (selectieModus !== 'stemmen') return;
     if (!Object.prototype.hasOwnProperty.call(stemmen, spelId)) return;
 
+    // Valideer spelerNummer: moet 1 of 2 zijn
+    if (spelerNummer !== 1 && spelerNummer !== 2) return;
+
     // Verwijder eventuele vorige stem van deze speler
     const vorigeStem = spelerStemmen[spelerNummer];
     if (vorigeStem) {
@@ -135,6 +162,11 @@ io.on('connection', (socket) => {
     // Registreer de nieuwe stem
     spelerStemmen[spelerNummer] = spelId;
     stemmen[spelId]++;
+
+    // Sla de volgorde op als dit de EERSTE stem op dit spel is
+    if (!Object.prototype.hasOwnProperty.call(eersteSteminIndex, spelId)) {
+      eersteSteminIndex[spelId] = stemVolgordeIndex++;
+    }
 
     console.log(`🗳️  Speler ${spelerNummer} stemt op: ${spelId} (${stemmen[spelId]} stem(men))`);
     io.emit('stemUpdate', { stemmen, spelerStemmen });
@@ -155,6 +187,8 @@ io.on('connection', (socket) => {
 
   // ── Spel kiezen (modus: speler1 of eerst) ────────────────────────────────
   socket.on('kiesSpel', ({ spelId, spelerNummer }) => {
+    // Valideer spelerNummer: moet 1 of 2 zijn
+    if (spelerNummer !== 1 && spelerNummer !== 2) return;
     // Speler 1 kiest: alleen speler 1 mag selecteren
     if (selectieModus === 'speler1' && spelerNummer !== 1) return;
 

@@ -185,8 +185,8 @@ body {
 
 /* Korte beschrijving */
 .spel-beschrijving {
-  font-size: 1.3rem;
-  color:     var(--wit-zacht);
+  font-size:  1.3rem;
+  color:      var(--wit-zacht);
   text-align: center;
 }
 

@@ -9,6 +9,11 @@ let huidigeSpellen    = [];        // lijst met spelgegevens van de server
 let huidigeStemmen    = {};        // spelId -> aantal stemmen
 let huidigeSpelerStemmen = {};     // spelerNummer -> spelId
 
+// Spelernummer is ingesteld door de inline <script> in de HTML (1 of 2)
+const SPELER_NUMMER = (window.SPELER_NUMMER === 1 || window.SPELER_NUMMER === 2)
+  ? window.SPELER_NUMMER
+  : 1; // Standaard naar speler 1 als de waarde ontbreekt
+
 // ─── Modus labels in het Nederlands ─────────────────────────────────────────
 const MODUS_NAMEN = {
   speler1: '👆 Speler 1 kiest',
@@ -98,11 +103,11 @@ function bouwSpelkaartjes(spellen) {
 function kiesSpel(spelId) {
   if (huidigeModus === 'stemmen') {
     // Stem uitbrengen (of wijzigen)
-    socket.emit('stem', { spelId, spelerNummer: window.SPELER_NUMMER });
+    socket.emit('stem', { spelId, spelerNummer: SPELER_NUMMER });
 
   } else if (huidigeModus === 'speler1' || huidigeModus === 'eerst') {
     // Spel direct kiezen
-    socket.emit('kiesSpel', { spelId, spelerNummer: window.SPELER_NUMMER });
+    socket.emit('kiesSpel', { spelId, spelerNummer: SPELER_NUMMER });
   }
 }
 
@@ -127,7 +132,7 @@ function updateModus(modus) {
     kaartje.classList.remove('klikbaar', 'grijs', 'stembaar', 'pulseren');
 
     if (modus === 'speler1') {
-      if (window.SPELER_NUMMER === 1) {
+      if (SPELER_NUMMER === 1) {
         // Speler 1 mag klikken
         kaartje.classList.add('klikbaar');
       } else {
@@ -155,7 +160,7 @@ function updateStemTellers(stemmen, spelerStemmen) {
   huidigeSpelerStemmen = spelerStemmen;
 
   // Eigen stem van deze speler (spelerNummer -> spelId)
-  const eigenStem = spelerStemmen[window.SPELER_NUMMER];
+  const eigenStem = spelerStemmen[SPELER_NUMMER];
 
   Object.entries(stemmen).forEach(([spelId, aantal]) => {
     // Teller element
