@@ -1,0 +1,415 @@
+/* ===== RESET & BASIS ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-top:      #1a1a2e;
+  --bg-bottom:   #0f3460;
+  --card-bg:     #1a4a8a;
+  --card-hover:  #1f5aa0;
+  --accent:      #f5c800;
+  --accent2:     #4fc3f7;
+  --text:        #ffffff;
+  --text-muted:  rgba(255, 255, 255, 0.6);
+  --glass:       rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.13);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(160deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  font-family: "Segoe UI", sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== PAGINA WRAPPER ===== */
+.pagina {
+  width: 1920px;
+  height: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 60px 48px;
+  position: relative;
+}
+
+/* ===== LOGO ===== */
+.logo-header {
+  width: 100%;
+  text-align: center;
+}
+
+.logo {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  color: var(--text);
+  text-shadow: 0 2px 30px rgba(245, 200, 0, 0.35);
+}
+
+/* ===== MODUS SCHAKELAAR ===== */
+.modus-sectie {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.modus-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.modus-knoppen {
+  display: flex;
+  gap: 20px;
+}
+
+.modus-knop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 220px;
+  height: 110px;
+  background: var(--glass);
+  border: 2px solid var(--glass-border);
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.modus-knop:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text);
+  transform: translateY(-3px);
+}
+
+.modus-knop.actief {
+  background: rgba(245, 200, 0, 0.18);
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow: 0 0 24px rgba(245, 200, 0, 0.25);
+}
+
+.modus-icoon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* ===== SPELLEN GRID ===== */
+.spel-keuze {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.spellen-grid {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.spel-kaart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 300px;
+  height: 260px;
+  background: var(--card-bg);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  color: var(--text);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.spel-kaart::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 60%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.spel-kaart:hover:not(:disabled) {
+  background: var(--card-hover);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.spel-kaart:active:not(:disabled) {
+  transform: translateY(-4px) scale(1.01);
+}
+
+.spel-kaart:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spel-icoon {
+  font-size: 4.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+}
+
+.spel-naam {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Gestemd indicators */
+.spel-kaart.gestemd-p1 {
+  border-color: #e84040;
+  box-shadow: 0 0 0 4px rgba(232, 64, 64, 0.35), 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.spel-kaart.gestemd-p2 {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(245, 200, 0, 0.35), 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.spel-kaart.gestemd-p1.gestemd-p2 {
+  border-color: #00c864;
+  box-shadow: 0 0 0 4px rgba(0, 200, 100, 0.45), 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.stem-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stem-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: none;
+}
+
+.stem-dot.p1 { background: #e84040; }
+.stem-dot.p2 { background: var(--accent); }
+
+.spel-kaart.gestemd-p1 .stem-dot.p1,
+.spel-kaart.gestemd-p2 .stem-dot.p2 {
+  display: block;
+}
+
+/* ===== WACHT SCHERM (player2 in mode 1) ===== */
+.wacht-scherm {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wacht-kaart {
+  background: var(--glass);
+  border: 2px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 60px 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.wacht-emoji {
+  font-size: 5rem;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.12); opacity: 0.85; }
+}
+
+.wacht-tekst {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.wacht-sub {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+/* ===== STATUS BERICHT ===== */
+.status-balk {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-bericht {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent2);
+  background: rgba(79, 195, 247, 0.1);
+  border: 1px solid rgba(79, 195, 247, 0.25);
+  border-radius: 50px;
+  padding: 10px 30px;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.status-bericht.verborgen {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== GEEN-AKKOORD OVERLAY ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.overlay.verborgen {
+  display: none;
+}
+
+.overlay-kaart {
+  background: linear-gradient(145deg, #1e2d50, #162040);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  padding: 60px 80px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  min-width: 500px;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.overlay-icoon {
+  font-size: 4.5rem;
+}
+
+.overlay-kaart h2 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.overlay-kaart p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.keuze-vergelijking {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.keuze-item {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.keuze-item .speler-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.keuze-vs {
+  font-size: 1.8rem;
+  opacity: 0.4;
+  font-weight: 900;
+}
+
+.btn-opnieuw {
+  margin-top: 10px;
+  padding: 16px 50px;
+  background: linear-gradient(135deg, var(--card-bg), #1f5aa0);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  color: var(--text);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.btn-opnieuw:hover {
+  background: linear-gradient(135deg, #1f5aa0, #2470c0);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+/* ===== VERBORGEN HULPKLASSE ===== */
+.verborgen {
+  display: none !important;
+}
+
+/* ===== PLAYER 2 – ROTATIE ===== */
+.roteer-180 {
+  transform: rotate(180deg);
+  transform-origin: center center;
+}

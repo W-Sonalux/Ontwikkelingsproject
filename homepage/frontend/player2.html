@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, initial-scale=1.0">
+  <title>SOZZIAL – Speler 2</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Hele pagina 180° geroteerd zodat content leesbaar is voor de tegenoverstaande speler -->
+  <div class="pagina roteer-180">
+
+    <!-- Logo -->
+    <header class="logo-header">
+      <h1 class="logo">SOZZIAL</h1>
+    </header>
+
+    <!-- Lege ruimte ter hoogte van modus schakelaar (player2 bedient die niet) -->
+    <div style="height: 128px;"></div>
+
+    <!-- Wacht-scherm (zichtbaar in modus 1) -->
+    <div class="wacht-scherm" id="wachtScherm">
+      <div class="wacht-kaart">
+        <span class="wacht-emoji">⏳</span>
+        <p class="wacht-tekst">Speler 1 kiest een spel...</p>
+        <p class="wacht-sub">Even geduld</p>
+      </div>
+    </div>
+
+    <!-- Spellen (zichtbaar in modus 2 en 3) -->
+    <main class="spel-keuze verborgen" id="spelKeuze">
+      <div class="spellen-grid">
+
+        <button class="spel-kaart" data-spel="stokvangen">
+          <div class="stem-badge">
+            <span class="stem-dot p1"></span>
+            <span class="stem-dot p2"></span>
+          </div>
+          <span class="spel-icoon">🪵</span>
+          <span class="spel-naam">Stokvangen</span>
+        </button>
+
+        <button class="spel-kaart" data-spel="memory">
+          <div class="stem-badge">
+            <span class="stem-dot p1"></span>
+            <span class="stem-dot p2"></span>
+          </div>
+          <span class="spel-icoon">🐾</span>
+          <span class="spel-naam">Dieren Memory</span>
+        </button>
+
+        <button class="spel-kaart" data-spel="4opeenrij">
+          <div class="stem-badge">
+            <span class="stem-dot p1"></span>
+            <span class="stem-dot p2"></span>
+          </div>
+          <span class="spel-icoon">🔴</span>
+          <span class="spel-naam">4 op een rij</span>
+        </button>
+
+      </div>
+    </main>
+
+    <!-- Status bericht -->
+    <div class="status-balk">
+      <div class="status-bericht verborgen" id="statusBericht"></div>
+    </div>
+
+  </div>
+
+  <!-- Geen-akkoord overlay (mode 2) -->
+  <div class="overlay verborgen" id="geenAkkoordOverlay">
+    <!-- Overlay zelf ook roteren zodat het leesbaar is voor speler 2 -->
+    <div class="overlay-kaart roteer-180">
+      <span class="overlay-icoon">🤔</span>
+      <h2>Geen akkoord!</h2>
+      <div class="keuze-vergelijking" id="keuzeVergelijking"></div>
+      <p>Kies opnieuw...</p>
+      <button class="btn-opnieuw" id="sluitOverlay">OK, opnieuw kiezen</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+  <script>initHomepage('player2');</script>
+</body>
+</html>

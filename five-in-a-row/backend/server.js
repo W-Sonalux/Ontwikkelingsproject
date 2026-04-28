@@ -3,7 +3,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
-const PORT = 8080;
+const PORT = 3002;
 const ROWS = 6;
 const COLS = 5;
 const WIN_COUNT = 4;

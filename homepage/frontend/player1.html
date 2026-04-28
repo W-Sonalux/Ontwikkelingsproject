@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, initial-scale=1.0">
+  <title>SOZZIAL – Speler 1</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="pagina">
+
+    <!-- Logo -->
+    <header class="logo-header">
+      <h1 class="logo">SOZZIAL</h1>
+    </header>
+
+    <!-- Modus schakelaar (alleen player1) -->
+    <section class="modus-sectie">
+      <span class="modus-label">Kies een modus</span>
+      <div class="modus-knoppen">
+        <button class="modus-knop actief" data-modus="1">
+          <span class="modus-icoon">👑</span>
+          <span>Speler 1 kiest</span>
+        </button>
+        <button class="modus-knop" data-modus="2">
+          <span class="modus-icoon">🗳️</span>
+          <span>Stemmen</span>
+        </button>
+        <button class="modus-knop" data-modus="3">
+          <span class="modus-icoon">⚡</span>
+          <span>Wie het eerst klikt</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Spellen (altijd zichtbaar voor player1) -->
+    <main class="spel-keuze" id="spelKeuze">
+      <div class="spellen-grid">
+
+        <button class="spel-kaart" data-spel="stokvangen">
+          <div class="stem-badge">
+            <span class="stem-dot p1"></span>
+            <span class="stem-dot p2"></span>
+          </div>
+          <span class="spel-icoon">🪵</span>
+          <span class="spel-naam">Stokvangen</span>
+        </button>
+
+        <button class="spel-kaart" data-spel="memory">
+          <div class="stem-badge">
+            <span class="stem-dot p1"></span>
+            <span class="stem-dot p2"></span>
+          </div>
+          <span class="spel-icoon">🐾</span>
+          <span class="spel-naam">Dieren Memory</span>
+        </button>
+
+        <button class="spel-kaart" data-spel="4opeenrij">
+          <div class="stem-badge">
+            <span class="stem-dot p1"></span>
+            <span class="stem-dot p2"></span>
+          </div>
+          <span class="spel-icoon">🔴</span>
+          <span class="spel-naam">4 op een rij</span>
+        </button>
+
+      </div>
+    </main>
+
+    <!-- Status bericht -->
+    <div class="status-balk">
+      <div class="status-bericht verborgen" id="statusBericht"></div>
+    </div>
+
+  </div>
+
+  <!-- Geen-akkoord overlay (mode 2) -->
+  <div class="overlay verborgen" id="geenAkkoordOverlay">
+    <div class="overlay-kaart">
+      <span class="overlay-icoon">🤔</span>
+      <h2>Geen akkoord!</h2>
+      <div class="keuze-vergelijking" id="keuzeVergelijking"></div>
+      <p>Kies opnieuw...</p>
+      <button class="btn-opnieuw" id="sluitOverlay">OK, opnieuw kiezen</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+  <script>initHomepage('player1');</script>
+</body>
+</html>
