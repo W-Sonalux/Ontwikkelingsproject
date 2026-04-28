@@ -164,7 +164,7 @@ function initHomepage(role) {
   // Spel-kaart klikken
   spelKaarten.forEach(kaart => {
     kaart.addEventListener('click', () => {
-      if (huidigeModus === 1 && role !== 'player1') return;
+      if (kaart.disabled) return;
       const spel = kaart.dataset.spel;
       socket.emit('kiesSpel', { game: spel, role });
     });

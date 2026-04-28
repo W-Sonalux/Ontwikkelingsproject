@@ -65,8 +65,9 @@ io.on('connection', (socket) => {
         if (votes.player1 === votes.player2) {
           io.emit('spelGekozen', { game, url });
         } else {
+          // Stuur het conflict naar de clients; laat hen via 'resetStemmen' de votes wissen
+          // zodat er geen race-conditie is tussen 'geenAkkoord' en een leeg 'stemUpdate'.
           io.emit('geenAkkoord', { votes: { ...votes } });
-          votes = {};
         }
       }
 
