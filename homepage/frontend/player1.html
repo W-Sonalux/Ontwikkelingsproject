@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Vaste viewport voor 1920×1080 touchscreen -->
+  <meta name="viewport" content="width=1920, initial-scale=1.0" />
+  <title>SOZZIAL — Speler 1</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="player1">
+  <div class="scherm">
+
+    <!-- ── Logo bovenaan ── -->
+    <header class="logo-balk">
+      <h1 class="logo">SOZZIAL</h1>
+      <span class="speler-badge">Speler 1</span>
+    </header>
+
+    <!-- ── Selectiemodus schakelaar (alleen zichtbaar op player1) ── -->
+    <section class="modus-sectie">
+      <p class="modus-label">Selectiemodus</p>
+      <div class="modus-knoppen">
+        <button class="modus-knop actief" data-modus="speler1">
+          👆 Speler 1 kiest
+        </button>
+        <button class="modus-knop" data-modus="stemmen">
+          🗳️ Stemmen
+        </button>
+        <button class="modus-knop" data-modus="eerst">
+          ⚡ Wie het eerst klikt
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Drie spelkaartjes (gevuld door game.js) ── -->
+    <main class="spellen-rij" id="spellen-rij">
+    </main>
+
+    <!-- ── Verbindingsstatus onderaan ── -->
+    <footer class="status-balk">
+      <span id="status-tekst">Verbinden…</span>
+    </footer>
+
+  </div>
+
+  <!-- Socket.io client -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Geef aan dat dit speler 1 is -->
+  <script>window.SPELER_NUMMER = 1;</script>
+  <!-- Spelkeuze logica -->
+  <script src="game.js"></script>
+</body>
+</html>

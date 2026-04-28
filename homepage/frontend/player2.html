@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Vaste viewport voor 1920×1080 touchscreen -->
+  <meta name="viewport" content="width=1920, initial-scale=1.0" />
+  <title>SOZZIAL — Speler 2</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="player2">
+  <div class="scherm">
+
+    <!-- ── Logo bovenaan ── -->
+    <header class="logo-balk">
+      <h1 class="logo">SOZZIAL</h1>
+      <span class="speler-badge">Speler 2</span>
+    </header>
+
+    <!-- ── Huidige modus als tekst (geen schakelaar, alleen leesbaar) ── -->
+    <section class="modus-sectie">
+      <p class="modus-label">Huidige modus</p>
+      <div class="huidige-modus-display">
+        <span id="huidige-modus-tekst">—</span>
+      </div>
+    </section>
+
+    <!-- ── Drie spelkaartjes (gevuld door game.js) ── -->
+    <main class="spellen-rij" id="spellen-rij">
+    </main>
+
+    <!-- ── Verbindingsstatus onderaan ── -->
+    <footer class="status-balk">
+      <span id="status-tekst">Verbinden…</span>
+    </footer>
+
+  </div>
+
+  <!-- Socket.io client -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Geef aan dat dit speler 2 is -->
+  <script>window.SPELER_NUMMER = 2;</script>
+  <!-- Spelkeuze logica -->
+  <script src="game.js"></script>
+</body>
+</html>

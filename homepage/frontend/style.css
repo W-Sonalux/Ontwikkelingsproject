@@ -1,0 +1,288 @@
+/* ===== BASIS ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Kleurenpalet — consistent met de bestaande spellen */
+  --bg-donker:      #1a1a2e;
+  --bg-medium:      #16213e;
+  --bg-licht:       #0f3460;
+  --accent:         #e94560;
+  --accent-zwak:    rgba(233, 69, 96, 0.25);
+  --wit:            #ffffff;
+  --wit-zacht:      rgba(255, 255, 255, 0.65);
+  --wit-subtiel:    rgba(255, 255, 255, 0.1);
+  --wit-rand:       rgba(255, 255, 255, 0.12);
+  --kaartje-bg:     #1e2d50;
+  --kaartje-rand:   rgba(255, 255, 255, 0.12);
+}
+
+/* Vaste schermafmeting voor 1920×1080 touchscreen */
+html, body {
+  width:    1920px;
+  height:   1080px;
+  overflow: hidden;
+}
+
+body {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  background:      linear-gradient(160deg, var(--bg-donker) 0%, var(--bg-licht) 100%);
+  font-family:     "Segoe UI", Arial, sans-serif;
+  color:           var(--wit);
+  user-select:     none;
+}
+
+/* ===== SCHERM CONTAINER ===== */
+.scherm {
+  width:            100%;
+  height:           100%;
+  display:          flex;
+  flex-direction:   column;
+  align-items:      center;
+  justify-content:  space-between;
+  padding:          48px 100px 36px;
+}
+
+/* ===== LOGO BALK ===== */
+.logo-balk {
+  display:     flex;
+  align-items: center;
+  gap:         24px;
+}
+
+.logo {
+  font-size:      4.5rem;
+  font-weight:    900;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  color:          var(--wit);
+  text-shadow:    0 2px 30px rgba(233, 69, 96, 0.35);
+}
+
+.speler-badge {
+  background:    var(--wit-subtiel);
+  border:        1px solid var(--wit-rand);
+  border-radius: 50px;
+  padding:       10px 28px;
+  font-size:     1.3rem;
+  font-weight:   600;
+  color:         var(--wit-zacht);
+  letter-spacing: 1px;
+}
+
+/* ===== MODUS SECTIE ===== */
+.modus-sectie {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            18px;
+}
+
+.modus-label {
+  font-size:      1.4rem;
+  font-weight:    600;
+  color:          var(--wit-zacht);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Drie modus-knoppen (alleen zichtbaar op player1) */
+.modus-knoppen {
+  display: flex;
+  gap:     16px;
+}
+
+.modus-knop {
+  padding:        20px 40px;
+  background:     var(--wit-subtiel);
+  border:         2px solid var(--wit-rand);
+  border-radius:  18px;
+  color:          var(--wit-zacht);
+  font-size:      1.3rem;
+  font-weight:    600;
+  font-family:    "Segoe UI", Arial, sans-serif;
+  cursor:         pointer;
+  transition:     all 0.2s ease;
+  min-width:      280px;
+  text-align:     center;
+}
+
+.modus-knop:hover {
+  background:    rgba(255, 255, 255, 0.18);
+  color:         var(--wit);
+  border-color:  rgba(255, 255, 255, 0.3);
+  transform:     translateY(-2px);
+}
+
+.modus-knop.actief {
+  background:    var(--accent);
+  border-color:  var(--accent);
+  color:         var(--wit);
+  box-shadow:    0 6px 24px rgba(233, 69, 96, 0.45);
+  transform:     none;
+}
+
+/* Huidige modus als tekst (alleen zichtbaar op player2) */
+.huidige-modus-display {
+  background:    var(--wit-subtiel);
+  border:        1px solid var(--wit-rand);
+  border-radius: 18px;
+  padding:       22px 60px;
+}
+
+#huidige-modus-tekst {
+  font-size:   1.8rem;
+  font-weight: 700;
+  color:       var(--wit);
+}
+
+/* ===== SPELKAARTJES RIJ ===== */
+.spellen-rij {
+  display:         flex;
+  flex-direction:  row;
+  gap:             60px;
+  align-items:     center;
+  justify-content: center;
+}
+
+/* ===== SPELKAARTJE ===== */
+.spel-kaartje {
+  width:           360px;
+  height:          360px;
+  background:      var(--kaartje-bg);
+  border:          2px solid var(--kaartje-rand);
+  border-radius:   28px;
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  gap:             14px;
+  cursor:          default;
+  transition:      transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+  position:        relative;
+  overflow:        hidden;
+}
+
+/* Groot emoji-icoon */
+.spel-emoji {
+  font-size:   5.5rem;
+  line-height: 1;
+}
+
+/* Naam van het spel */
+.spel-naam {
+  font-size:      2.2rem;
+  font-weight:    800;
+  letter-spacing: 1px;
+  text-align:     center;
+  color:          var(--wit);
+}
+
+/* Korte beschrijving */
+.spel-beschrijving {
+  font-size: 1.3rem;
+  color:     var(--wit-zacht);
+  text-align: center;
+}
+
+/* Stemteller (zichtbaar in stemmodus) */
+.stem-teller {
+  font-size:   1.3rem;
+  font-weight: 700;
+  color:       var(--accent);
+  min-height:  30px;
+  opacity:     0;
+  transition:  opacity 0.2s ease;
+}
+
+.stem-teller.zichtbaar {
+  opacity: 1;
+}
+
+/* ── Klikbaar kaartje (speler1 kiest / wie het eerst klikt) ── */
+.spel-kaartje.klikbaar {
+  cursor: pointer;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.spel-kaartje.klikbaar:hover {
+  transform:    translateY(-10px) scale(1.02);
+  border-color: var(--accent);
+  box-shadow:   0 20px 60px rgba(233, 69, 96, 0.3);
+}
+
+.spel-kaartje.klikbaar:active {
+  transform: scale(0.97);
+}
+
+/* ── Grijs (player2 ziet grayed-out kaartjes in modus speler1) ── */
+.spel-kaartje.grijs {
+  opacity:        0.35;
+  filter:         grayscale(0.6);
+  cursor:         not-allowed;
+  pointer-events: none;
+}
+
+/* ── Stembaar kaartje (stemmodus) ── */
+.spel-kaartje.stembaar {
+  cursor: pointer;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.spel-kaartje.stembaar:hover {
+  transform:    translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow:   0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Eigen stem: actieve/geselecteerde staat ── */
+.spel-kaartje.eigen-stem {
+  border-color: var(--accent);
+  box-shadow:   0 0 0 3px rgba(233, 69, 96, 0.3), 0 16px 48px rgba(233, 69, 96, 0.25);
+  background:   linear-gradient(145deg, #2a1e38, #1e2d50);
+}
+
+/* Vinkje rechtsbovenin bij eigen stem */
+.spel-kaartje.eigen-stem::after {
+  content:     '✓';
+  position:    absolute;
+  top:         18px;
+  right:       22px;
+  font-size:   2rem;
+  color:       var(--accent);
+  font-weight: 900;
+}
+
+/* ── Pulseer animatie (wie het eerst klikt modus) ── */
+@keyframes pulseer {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0.0); }
+  50%       { box-shadow: 0 0 0 16px rgba(233, 69, 96, 0.12); }
+}
+
+.spel-kaartje.pulseren {
+  animation: pulseer 2.4s ease-in-out infinite;
+}
+
+/* ===== NAVIGEREN OVERLAY ===== */
+@keyframes uitfaden {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+body.navigeren {
+  animation: uitfaden 0.55s ease forwards;
+  pointer-events: none;
+}
+
+/* ===== STATUS BALK ===== */
+.status-balk {
+  font-size:   1rem;
+  font-weight: 500;
+  color:       rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+}
