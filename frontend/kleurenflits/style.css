@@ -1,0 +1,363 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0d1117;
+  --surface:  #161b22;
+  --surface2: #21262d;
+  --accent:   #58a6ff;
+  --success:  #3fb950;
+  --warning:  #d29922;
+  --danger:   #f85149;
+  --text:     #e6edf3;
+  --muted:    #8b949e;
+  --border:   #30363d;
+  --radius:   16px;
+
+  --rood:  #f85149;
+  --blauw: #58a6ff;
+  --groen: #3fb950;
+  --geel:  #d29922;
+}
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  user-select: none;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 100px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--text);
+  flex: 1;
+}
+
+.header-midden {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.spel-naam {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.header-knoppen {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.header-knop {
+  background: var(--accent);
+  color: #0d1117;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 40px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.header-knop:hover { transform: scale(1.04); }
+
+.header-knop.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.header-knop.secondary:hover { border-color: var(--accent); }
+
+/* ── WACHTSCHERM ── */
+.wacht-scherm {
+  width: 1920px;
+  height: calc(1080px - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wacht-inhoud {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.wacht-emoji {
+  font-size: 120px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.1); }
+}
+
+.wacht-inhoud h1 { font-size: 64px; font-weight: 800; }
+.wacht-inhoud p  { font-size: 32px; color: var(--muted); }
+
+/* ── SPELINHOUD ── */
+.spel-inhoud {
+  width: 1920px;
+  height: calc(1080px - 100px);
+  display: flex;
+  align-items: stretch;
+}
+
+.spel-inhoud.verborgen { display: none; }
+
+/* ── SPELER PANELEN ── */
+.speler-paneel {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px 20px;
+}
+
+#speler2-paneel {
+  border-right: none;
+  border-left: 2px solid var(--border);
+}
+
+.speler-naam {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+}
+
+.levens-rij {
+  display: flex;
+  gap: 12px;
+}
+
+.hart {
+  font-size: 48px;
+  color: var(--danger);
+  transition: all 0.3s;
+}
+
+.hart.leeg {
+  color: var(--border);
+  filter: grayscale(1);
+}
+
+.speler-status {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  min-height: 32px;
+  color: var(--muted);
+}
+
+.speler-status.goed  { color: var(--success); }
+.speler-status.fout  { color: var(--danger);  }
+.speler-status.klaar { color: var(--accent);  }
+
+/* ── MIDDEN ── */
+.midden {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* ── RONDE TELLER ── */
+.ronde-teller {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.ronde-teller span {
+  color: var(--accent);
+  font-size: 40px;
+}
+
+/* ── STATUS BERICHT ── */
+.status-bericht {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  min-height: 44px;
+  transition: color 0.3s;
+}
+
+.status-bericht.kijk  { color: var(--accent); }
+.status-bericht.jij   { color: var(--success); }
+.status-bericht.fout  { color: var(--danger);  }
+.status-bericht.wacht { color: var(--muted);   }
+
+/* ── KNOPPEN GRID ── */
+.knoppen-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 520px;
+  height: 520px;
+}
+
+.flits-knop {
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: filter 0.1s, transform 0.1s, box-shadow 0.1s;
+  opacity: 0.35;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.flits-knop.rood  { background: var(--rood);  }
+.flits-knop.blauw { background: var(--blauw); }
+.flits-knop.groen { background: var(--groen); }
+.flits-knop.geel  { background: var(--geel);  }
+
+.flits-knop.actief {
+  opacity: 1;
+  filter: brightness(1.4);
+  transform: scale(0.96);
+  box-shadow: 0 0 40px 10px rgba(255,255,255,0.2);
+}
+
+.flits-knop.klikbaar {
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.flits-knop.klikbaar:hover {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.flits-knop.geblokkeerd {
+  cursor: not-allowed;
+  opacity: 0.2;
+}
+
+/* ── VOORTGANG RIJ ── */
+.voortgang-rij {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px;
+  min-height: 28px;
+}
+
+.voortgang-stip {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s;
+}
+
+.voortgang-stip.rood  { background: var(--rood); }
+.voortgang-stip.blauw { background: var(--blauw); }
+.voortgang-stip.groen { background: var(--groen); }
+.voortgang-stip.geel  { background: var(--geel); }
+.voortgang-stip.fout  { background: var(--danger); }
+
+/* ── KNOPPEN (in overlay) ── */
+.start-knop {
+  background: var(--accent);
+  color: #0d1117;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 60px;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.start-knop:hover { transform: scale(1.04); }
+
+.start-knop.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 2px solid var(--border);
+  margin-top: 12px;
+}
+
+.start-knop.secondary:hover { border-color: var(--accent); }
+
+/* ── WINNAAR OVERLAY ── */
+.winnaar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,17,23,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winnaar-overlay.verborgen { display: none; }
+
+.winnaar-kaart {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 60px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.winnaar-emoji { font-size: 100px; }
+
+.winnaar-kaart h2 {
+  font-size: 56px;
+  font-weight: 800;
+}
+
+.winnaar-ondertitel {
+  font-size: 28px;
+  color: var(--muted);
+}
+
+/* ── UTILS ── */
+.verborgen { display: none !important; }

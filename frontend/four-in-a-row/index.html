@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920"/>
+  <title>4 op een rij</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/four-in-a-row/style.css"/>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 class="logo">SOZZIAL</h1>
+    <div class="header-midden">
+      <span class="spel-naam">🔴 4 op een rij</span>
+    </div>
+    <div class="header-knoppen">
+      <button id="restartBtn" class="header-knop" disabled>↺ Opnieuw</button>
+      <button class="header-knop secondary" onclick="naarHome()">🏠 Home</button>
+    </div>
+  </header>
+
+  <!-- Wachtscherm -->
+  <div id="wacht-scherm" class="wacht-scherm">
+    <div class="wacht-inhoud">
+      <div class="wacht-emoji">🔴</div>
+      <h1>4 op een rij</h1>
+      <p>Wachten op tweede speler...</p>
+    </div>
+  </div>
+
+  <!-- Spelinhoud -->
+  <div id="spel-inhoud" class="spel-inhoud verborgen">
+
+    <!-- Speler 1 paneel -->
+    <div class="speler-paneel" id="player1-info">
+      <div class="disc-icon disc-red"></div>
+      <div class="speler-naam" id="player1-label">Speler 1</div>
+      <div class="beurt-indicator">● Aan beurt</div>
+    </div>
+
+    <!-- Midden -->
+    <div class="midden">
+      <div class="top-balk">
+        <div id="status-message" class="status-bericht">Verbinden...</div>
+      </div>
+
+      <div class="board-area">
+        <div class="col-buttons">
+          <button class="col-btn" data-col="0">▼</button>
+          <button class="col-btn" data-col="1">▼</button>
+          <button class="col-btn" data-col="2">▼</button>
+          <button class="col-btn" data-col="3">▼</button>
+          <button class="col-btn" data-col="4">▼</button>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="discCanvas"></canvas>
+          <canvas id="boardCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Speler 2 paneel -->
+    <div class="speler-paneel" id="player2-info">
+      <div class="disc-icon disc-yellow"></div>
+      <div class="speler-naam" id="player2-label">Speler 2</div>
+      <div class="beurt-indicator">● Aan beurt</div>
+    </div>
+
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay" class="winnaar-overlay verborgen">
+    <div class="winnaar-kaart">
+      <div id="overlay-icon" class="winnaar-emoji"></div>
+      <h2 id="overlay-title"></h2>
+      <p id="overlay-subtitle"></p>
+      <button id="overlayRestartBtn" class="start-knop">↺ Opnieuw spelen</button>
+      <button class="start-knop secondary" onclick="naarHome()">🏠 Terug naar Home</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/four-in-a-row/game.js"></script>
+</body>
+</html>

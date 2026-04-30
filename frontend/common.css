@@ -1,0 +1,21 @@
+/* ── Terug naar home knop (gedeeld op alle pagina's) ── */
+.terug-knop {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 999;
+  background: #161b22;
+  color: #e6edf3;
+  border: 2px solid #30363d;
+  border-radius: 50px;
+  padding: 14px 28px;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.terug-knop:hover {
+  border-color: #58a6ff;
+  color: #58a6ff;
+  transform: translateX(-4px);
+}

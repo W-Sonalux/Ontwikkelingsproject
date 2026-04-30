@@ -1,0 +1,378 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0d1117;
+  --surface:     #161b22;
+  --surface2:    #21262d;
+  --accent:      #58a6ff;
+  --success:     #3fb950;
+  --warning:     #d29922;
+  --danger:      #f85149;
+  --text:        #e6edf3;
+  --muted:       #8b949e;
+  --border:      #30363d;
+  --radius:      16px;
+  --red:         #e84040;
+  --red-dark:    #b52a2a;
+  --yellow:      #f5c800;
+  --yellow-dark: #c49a00;
+  --cell-size:   90px;
+  --gap:         10px;
+}
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  user-select: none;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 100px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--text);
+  flex: 1;
+}
+
+.header-midden {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.spel-naam {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.header-knoppen {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.header-knop {
+  background: var(--accent);
+  color: #0d1117;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 40px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.header-knop:hover:not(:disabled) { transform: scale(1.04); }
+.header-knop:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.header-knop.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.header-knop.secondary:hover {
+  border-color: var(--accent);
+}
+
+/* ── WACHTSCHERM ── */
+.wacht-scherm {
+  width: 1920px;
+  height: calc(1080px - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wacht-inhoud {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.wacht-emoji {
+  font-size: 120px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.1); }
+}
+
+.wacht-inhoud h1 {
+  font-size: 64px;
+  font-weight: 800;
+}
+
+.wacht-inhoud p {
+  font-size: 32px;
+  color: var(--muted);
+}
+
+/* ── SPELINHOUD ── */
+.spel-inhoud {
+  width: 1920px;
+  height: calc(1080px - 100px);
+  display: flex;
+  align-items: stretch;
+}
+
+.spel-inhoud.verborgen { display: none; }
+
+/* ── SPELER PANELEN ── */
+.speler-paneel {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+#player2-info {
+  border-right: none;
+  border-left: 2px solid var(--border);
+}
+
+.speler-paneel.active {
+  border-color: var(--accent);
+  background: rgba(88,166,255,0.06);
+}
+
+.speler-naam {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+}
+
+.disc-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.disc-red {
+  background: radial-gradient(circle at 35% 30%, #ff7070, var(--red-dark));
+  box-shadow: 0 4px 20px rgba(232, 64, 64, 0.5);
+}
+
+.disc-yellow {
+  background: radial-gradient(circle at 35% 30%, #ffe066, var(--yellow-dark));
+  box-shadow: 0 4px 20px rgba(245, 200, 0, 0.5);
+}
+
+.beurt-indicator {
+  font-size: 18px;
+  color: var(--accent);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.speler-paneel.active .beurt-indicator {
+  opacity: 1;
+}
+
+/* ── MIDDEN ── */
+.midden {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px;
+}
+
+/* ── TOP BALK ── */
+.top-balk {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.status-bericht {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+}
+
+/* ── BOARD AREA ── */
+.board-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── KOLOM KNOPPEN ── */
+.col-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, var(--cell-size));
+  gap: var(--gap);
+  padding: 0 10px;
+}
+
+.col-btn {
+  height: 44px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.col-btn:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  transform: translateY(-3px);
+}
+
+.col-btn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.col-btn.active-player-1:hover:not(:disabled) {
+  background: rgba(232, 64, 64, 0.25);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.col-btn.active-player-2:hover:not(:disabled) {
+  background: rgba(245, 200, 0, 0.2);
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+/* ── CANVAS WRAPPER ── */
+.canvas-wrapper {
+  position: relative;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.canvas-wrapper canvas {
+  display: block;
+  border-radius: var(--radius);
+}
+
+#discCanvas {
+  position: relative;
+  z-index: 1;
+}
+
+#boardCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── KNOPPEN (in overlay) ── */
+.start-knop {
+  background: var(--accent);
+  color: #0d1117;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 60px;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.start-knop:hover:not(:disabled) { transform: scale(1.04); }
+.start-knop:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.start-knop.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.start-knop.secondary:hover {
+  border-color: var(--accent);
+}
+
+/* ── WINNAAR OVERLAY ── */
+.winnaar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,17,23,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.winnaar-overlay.verborgen { display: none; }
+
+.winnaar-kaart {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 60px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.winnaar-emoji { font-size: 100px; }
+
+.winnaar-kaart h2 {
+  font-size: 56px;
+  font-weight: 800;
+}
+
+.winnaar-kaart p {
+  font-size: 24px;
+  color: var(--muted);
+}
+
+/* ── UTILS ── */
+.verborgen { display: none !important; }

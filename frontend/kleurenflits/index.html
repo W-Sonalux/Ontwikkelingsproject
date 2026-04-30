@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920"/>
+  <title>SOZZIAL – Kleurenflits</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/kleurenflits/style.css"/>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 class="logo">SOZZIAL</h1>
+    <div class="header-midden">
+      <span class="spel-naam">🌈 Kleurenflits</span>
+    </div>
+    <div class="header-knoppen">
+      <button class="header-knop" onclick="opnieuw()">↺ Opnieuw</button>
+      <button class="header-knop secondary" onclick="naarHome()">🏠 Home</button>
+    </div>
+  </header>
+
+  <!-- Wachtscherm -->
+  <div id="wacht-scherm" class="wacht-scherm">
+    <div class="wacht-inhoud">
+      <div class="wacht-emoji">🌈</div>
+      <h1>Kleurenflits</h1>
+      <p>Wachten op tweede speler...</p>
+    </div>
+  </div>
+
+  <!-- Spelinhoud -->
+  <div id="spel-inhoud" class="spel-inhoud verborgen">
+
+    <!-- Linker speler — altijd speler 1 -->
+    <div class="speler-paneel" id="speler1-paneel">
+      <div class="speler-naam" id="speler1-naam">Speler 1</div>
+      <div class="levens-rij" id="speler1-levens">
+        <span class="hart actief">♥</span>
+        <span class="hart actief">♥</span>
+        <span class="hart actief">♥</span>
+      </div>
+      <div class="speler-status" id="speler1-status"></div>
+    </div>
+
+    <!-- Midden -->
+    <div class="midden">
+      <div class="ronde-teller">Ronde <span id="ronde-nummer">0</span></div>
+      <div class="status-bericht" id="status-bericht">Klaar voor de start!</div>
+
+      <div class="knoppen-grid">
+        <button class="flits-knop rood"  data-kleur="rood"  onclick="drukKnop('rood')"></button>
+        <button class="flits-knop blauw" data-kleur="blauw" onclick="drukKnop('blauw')"></button>
+        <button class="flits-knop groen" data-kleur="groen" onclick="drukKnop('groen')"></button>
+        <button class="flits-knop geel"  data-kleur="geel"  onclick="drukKnop('geel')"></button>
+      </div>
+
+      <div class="voortgang-rij" id="voortgang-rij"></div>
+    </div>
+
+    <!-- Rechter speler — altijd speler 2 -->
+    <div class="speler-paneel" id="speler2-paneel">
+      <div class="speler-naam" id="speler2-naam">Speler 2</div>
+      <div class="levens-rij" id="speler2-levens">
+        <span class="hart actief">♥</span>
+        <span class="hart actief">♥</span>
+        <span class="hart actief">♥</span>
+      </div>
+      <div class="speler-status" id="speler2-status"></div>
+    </div>
+
+  </div>
+
+  <!-- Winnaar overlay -->
+  <div id="winnaar-overlay" class="winnaar-overlay verborgen">
+    <div class="winnaar-kaart">
+      <div class="winnaar-emoji" id="winnaar-emoji">🏆</div>
+      <h2 id="winnaar-titel">Gewonnen!</h2>
+      <p id="winnaar-ondertitel" class="winnaar-ondertitel"></p>
+      <button class="start-knop" onclick="opnieuw()">↺ Opnieuw</button>
+      <button class="start-knop secondary" onclick="naarHome()">🏠 Terug naar Home</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/kleurenflits/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920"/>
+  <title>SOZZIAL – Speler 1</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/homepage/style.css"/>
+</head>
+<body data-player="player1">
+
+  <header>
+    <h1 class="logo">SOZZIAL</h1>
+    <div class="mode-switch">
+      <button class="mode-btn active" data-mode="p1">👇🏼 Speler 1 kiest</button>
+      <button class="mode-btn" data-mode="vote">🗳️ Stemmen</button>
+      <button class="mode-btn" data-mode="click">⚡ Eerst klikken</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="status-bar" class="status-bar"></div>
+
+    <div class="games-grid">
+
+      <div class="game-card" data-game="memory">
+        <div class="game-icon">🧠</div>
+        <h2>Memory</h2>
+        <p>Vind de koppels</p>
+      </div>
+
+      <div class="game-card" data-game="four-in-a-row">
+        <div class="game-icon">🔴</div>
+        <h2>4 op een rij</h2>
+        <p>Maak een rij van 4</p>
+      </div>
+
+      <div class="game-card" data-game="stokvangen">
+        <div class="game-icon">🪵</div>
+        <h2>Stokvangen</h2>
+        <p>Gooi en vang</p>
+      </div>
+
+      <div class="game-card" data-game="puzzel">
+        <div class="game-icon">🧩</div>
+        <h2>Puzzel</h2>
+        <p>Race naar de finish</p>
+      </div>
+
+      <div class="game-card" data-game="kleurenflits">
+        <div class="game-icon">🌈</div>
+        <h2>Kleurenflits</h2>
+        <p>Onthoud de volgorde</p>
+      </div>
+
+    </div>
+  </main>
+
+  <audio id="bg-muziek" src="/sounds/Background_01.mp3" loop></audio>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/homepage/game.js"></script>
+</body>
+</html>

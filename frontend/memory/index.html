@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920"/>
+  <title>SOZZIAL – Memory</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/memory/style.css"/>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 class="logo">SOZZIAL</h1>
+    <div class="header-midden">
+      <span class="spel-naam">🧠 Memory</span>
+    </div>
+    <div class="header-knoppen">
+      <button class="header-knop" onclick="nieuwSpel()">↺ Opnieuw</button>
+      <button class="header-knop secondary" onclick="naarHome()">🏠 Home</button>
+    </div>
+  </header>
+
+  <!-- Wachtscherm -->
+  <div id="wacht-scherm" class="wacht-scherm">
+    <div class="wacht-inhoud">
+      <div class="wacht-emoji">🧠</div>
+      <h1>Memory</h1>
+      <p>Wachten op tweede speler...</p>
+    </div>
+  </div>
+
+  <!-- Spelinhoud -->
+  <div id="spel-inhoud" class="spel-inhoud verborgen">
+
+    <!-- Linker speler -->
+    <div class="speler-paneel" id="speler1-kaart">
+      <div class="speler-naam" id="speler1-naam">Speler 1</div>
+      <div class="speler-score" id="speler1-score">0</div>
+      <div class="beurt-indicator" id="speler1-beurt">🎮 Aan de beurt</div>
+    </div>
+
+    <!-- Midden -->
+    <div class="midden">
+      <div class="top-balk">
+        <div class="stat">
+          <span class="stat-label">Pogingen</span>
+          <span class="stat-waarde" id="pogingen">0</span>
+        </div>
+        <div id="bericht" class="bericht verborgen"></div>
+        <div class="stat">
+          <span class="stat-label">Gevonden</span>
+          <span class="stat-waarde" id="paren">0 / 12</span>
+        </div>
+      </div>
+
+      <div class="speelveld" id="speelveld"></div>
+    </div>
+
+    <!-- Rechter speler -->
+    <div class="speler-paneel" id="speler2-kaart">
+      <div class="speler-naam" id="speler2-naam">Speler 2</div>
+      <div class="speler-score" id="speler2-score">0</div>
+      <div class="beurt-indicator" id="speler2-beurt">🎮 Aan de beurt</div>
+    </div>
+
+  </div>
+
+  <!-- Winnaar overlay -->
+  <div id="winnaar-overlay" class="winnaar-overlay verborgen">
+    <div class="winnaar-kaart">
+      <div class="winnaar-emoji">🏆</div>
+      <h2 id="winnaar-titel">Gewonnen!</h2>
+      <div id="eind-scores" class="eind-scores"></div>
+      <button class="start-knop" onclick="nieuwSpel()">↺ Speel Opnieuw</button>
+      <button class="start-knop secondary" onclick="naarHome()">🏠 Terug naar Home</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/memory/game.js"></script>
+</body>
+</html>

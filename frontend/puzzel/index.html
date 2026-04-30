@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=1920"/>
+  <title>SOZZIAL – Puzzel</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/puzzel/style.css"/>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1 class="logo">SOZZIAL</h1>
+    <div class="header-midden">
+      <span class="spel-naam">🧩 Puzzel</span>
+    </div>
+    <div class="header-knoppen">
+      <button id="herstart-knop" class="header-knop" onclick="naarSelectie()">↺ Opnieuw</button>
+      <button class="header-knop secondary" onclick="naarHome()">🏠 Home</button>
+    </div>
+  </header>
+
+  <!-- Wachtscherm -->
+  <div id="screen-waiting" class="screen active">
+    <div class="wacht-inhoud">
+      <div class="wacht-emoji">🧩</div>
+      <h1>Puzzel</h1>
+      <p id="wacht-tekst">Wachten op spelers...</p>
+    </div>
+  </div>
+
+  <!-- Selectiescherm -->
+  <div id="screen-selecting" class="screen">
+
+    <div id="p2-overlay" class="p2-overlay" style="display:none;">
+      <div class="p2-wacht-inhoud">
+        <div style="font-size:80px">⏳</div>
+        <p>Speler 1 kiest de instellingen...</p>
+        <div id="p2-preview" style="display:none;">
+          <img id="p2-preview-img" src="" alt=""/>
+          <span id="p2-grid-info"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="selectie-container">
+      <h1>🧩 Puzzel instellen</h1>
+      <div id="spelers-status" class="spelers-status">⏳ Wachten op speler 2...</div>
+
+      <div class="selectie-sectie">
+        <h2>Moeilijkheidsgraad</h2>
+        <div class="grid-knoppen">
+          <button class="grid-knop active" data-grid="2">2×2<span>Makkelijk</span></button>
+          <button class="grid-knop"        data-grid="3">3×3<span>Normaal</span></button>
+          <button class="grid-knop"        data-grid="4">4×4<span>Moeilijk</span></button>
+          <button class="grid-knop"        data-grid="5">5×5<span>Heel moeilijk</span></button>
+        </div>
+      </div>
+
+      <div class="selectie-sectie">
+        <h2>Kies een foto</h2>
+        <div class="foto-rij">
+          <button class="random-knop" id="random-knop">🎲 Willekeurig</button>
+          <div id="foto-lijst" class="foto-lijst"></div>
+        </div>
+        <div id="gekozen-preview" class="gekozen-preview" style="display:none;">
+          <img id="gekozen-img" src="" alt="Gekozen foto"/>
+        </div>
+      </div>
+
+      <button id="start-knop" class="start-knop" disabled>🧩 Start Puzzel!</button>
+    </div>
+  </div>
+
+  <!-- Spelscherm -->
+  <div id="screen-game" class="screen">
+
+    <!-- Linker speler -->
+    <div class="speler-paneel" id="paneel-links">
+      <div class="speler-label" id="label-links">Speler 1</div>
+      <div class="voortgang-balk">
+        <div class="voortgang-fill" id="voortgang-links"></div>
+      </div>
+      <div class="voortgang-tekst" id="tekst-links">0 / 0</div>
+      <div id="winnaar-badge-links" class="winnaar-badge" style="display:none;">🏆 Winnaar!</div>
+    </div>
+
+    <!-- Puzzelgebied -->
+    <div id="puzzel-gebied">
+
+      <div class="timer-rij">
+        <div id="timer" class="timer">00:00</div>
+        <button class="voorbeeld-knop"
+          onmousedown="toonVoorbeeld(true)"   onmouseup="toonVoorbeeld(false)"
+          ontouchstart="toonVoorbeeld(true)"  ontouchend="toonVoorbeeld(false)">
+          👁 Houd in voor voorbeeld
+        </button>
+      </div>
+
+      <div id="puzzel-bord" class="puzzel-bord"></div>
+
+      <div id="voorbeeld-overlay" class="voorbeeld-overlay" style="display:none;">
+        <img id="voorbeeld-img" src="" alt=""/>
+      </div>
+
+    </div>
+
+    <!-- Rechter speler -->
+    <div class="speler-paneel" id="paneel-rechts">
+      <div class="speler-label" id="label-rechts">Speler 2</div>
+      <div class="voortgang-balk">
+        <div class="voortgang-fill" id="voortgang-rechts"></div>
+      </div>
+      <div class="voortgang-tekst" id="tekst-rechts">0 / 0</div>
+      <div id="winnaar-badge-rechts" class="winnaar-badge" style="display:none;">🏆 Winnaar!</div>
+    </div>
+
+  </div>
+
+  <!-- Game over overlay -->
+  <div id="gameover-overlay" class="gameover-overlay" style="display:none;">
+    <div class="gameover-kaart">
+      <div id="gameover-icon" style="font-size:100px;">🏆</div>
+      <h2 id="gameover-titel"></h2>
+      <button onclick="naarSelectie()" class="start-knop">↺ Opnieuw spelen</button>
+      <button onclick="naarHome()" class="start-knop secondary">🏠 Terug naar Home</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/puzzel/game.js"></script>
+</body>
+</html>

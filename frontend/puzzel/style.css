@@ -1,0 +1,439 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0d1117;
+  --surface:  #161b22;
+  --surface2: #21262d;
+  --accent:   #58a6ff;
+  --success:  #3fb950;
+  --warning:  #d29922;
+  --text:     #e6edf3;
+  --muted:    #8b949e;
+  --border:   #30363d;
+  --radius:   16px;
+}
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  user-select: none;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 100px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--text);
+  flex: 1;
+}
+
+.header-midden {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.spel-naam {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.header-knoppen {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.header-knop {
+  background: var(--accent);
+  color: #0d1117;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 40px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.header-knop:hover:not(:disabled) { transform: scale(1.04); }
+.header-knop:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.header-knop.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.header-knop.secondary:hover {
+  border-color: var(--accent);
+}
+
+/* ── SCHERMEN ── */
+.screen {
+  display: none;
+  width: 1920px;
+  height: calc(1080px - 100px);
+}
+
+.screen.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── WACHTSCHERM ── */
+.wacht-inhoud { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.wacht-emoji  { font-size: 120px; animation: pulse 1.5s infinite; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.1); }
+}
+
+.wacht-inhoud h1 { font-size: 64px; font-weight: 800; }
+.wacht-inhoud p  { font-size: 32px; color: var(--muted); }
+
+/* ── SELECTIESCHERM ── */
+.selectie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 1400px;
+}
+
+.selectie-container h1 { font-size: 56px; font-weight: 800; }
+
+.spelers-status {
+  font-size: 26px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  padding: 12px 32px;
+}
+
+.spelers-status.klaar { color: var(--success); border-color: var(--success); }
+
+.selectie-sectie {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.selectie-sectie h2 { font-size: 32px; color: var(--muted); }
+
+.grid-knoppen { display: flex; gap: 24px; }
+
+.grid-knop {
+  background: var(--surface);
+  border: 3px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  width: 180px;
+  height: 120px;
+  font-size: 34px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.grid-knop span    { font-size: 18px; color: var(--muted); font-weight: 400; }
+.grid-knop:hover   { border-color: var(--accent); }
+.grid-knop.active  { border-color: var(--accent); background: rgba(88,166,255,0.1); color: var(--accent); }
+.grid-knop.disabled { opacity: 0.4; pointer-events: none; }
+
+.foto-rij {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px;
+}
+
+.random-knop {
+  background: var(--surface2);
+  border: 3px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 16px 32px;
+  font-size: 26px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.random-knop:hover { border-color: var(--warning); color: var(--warning); }
+
+.foto-thumb {
+  width: 160px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 3px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.foto-thumb:hover  { border-color: var(--accent); transform: scale(1.05); }
+.foto-thumb.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88,166,255,0.3); }
+
+.gekozen-preview {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.gekozen-preview img {
+  height: 120px;
+  border-radius: 12px;
+  border: 3px solid var(--accent);
+}
+
+.start-knop {
+  background: var(--accent);
+  color: #0d1117;
+  border: none;
+  border-radius: 50px;
+  padding: 24px 80px;
+  font-size: 32px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.start-knop:hover:not(:disabled) { transform: scale(1.04); }
+.start-knop:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.p2-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13,17,23,0.92);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p2-wacht-inhoud {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  font-size: 36px;
+}
+
+#p2-preview        { display: none; flex-direction: column; align-items: center; gap: 16px; }
+#p2-preview-img    { height: 200px; border-radius: 12px; border: 3px solid var(--accent); }
+#p2-grid-info      { font-size: 28px; color: var(--accent); font-weight: 700; }
+
+/* ── SPELSCHERM ── */
+#screen-game        { display: none; align-items: stretch; }
+#screen-game.active { display: flex; }
+
+/* Speler panelen */
+.speler-paneel {
+  width: 200px;
+  height: calc(1080px - 100px);
+  background: var(--surface);
+  border-right: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+  flex-shrink: 0;
+}
+
+#paneel-rechts { border-right: none; border-left: 2px solid var(--border); }
+
+.speler-label { font-size: 24px; font-weight: 700; text-align: center; }
+
+.voortgang-balk {
+  width: 140px;
+  height: 16px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.voortgang-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.voortgang-tekst { font-size: 20px; color: var(--muted); }
+.winnaar-badge   { font-size: 24px; font-weight: 700; color: var(--warning); text-align: center; }
+
+/* Puzzelgebied */
+#puzzel-gebied {
+  flex: 1;
+  position: relative;
+  height: calc(1080px - 100px);
+  overflow: hidden;
+}
+
+/* Timer */
+.timer-rij {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  z-index: 10;
+}
+
+.timer {
+  font-size: 44px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.voorbeeld-knop {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  color: var(--text);
+  padding: 10px 24px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.voorbeeld-knop:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Puzzelbord */
+.puzzel-bord {
+  position: absolute;
+  display: grid;
+  gap: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.puzzel-cel {
+  border: 1px dashed var(--border);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.puzzel-cel.heeft-stuk { border-color: transparent; }
+.puzzel-cel.sleep-over { border-color: var(--accent); background: rgba(88,166,255,0.15); }
+
+/* Puzzelstuk */
+.puzzel-stuk {
+  position: absolute;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: grab;
+  border: 2px solid var(--border);
+  transition: box-shadow 0.15s, transform 0.15s;
+  z-index: 5;
+}
+
+.puzzel-stuk:hover   { box-shadow: 0 4px 24px rgba(0,0,0,0.6); transform: scale(1.04); z-index: 6; }
+.puzzel-stuk.gesleept { opacity: 0.45; cursor: grabbing; }
+.puzzel-stuk img     { display: block; pointer-events: none; }
+
+.puzzel-cel .puzzel-stuk {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  border: none;
+  border-radius: 0;
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: default;
+  z-index: auto;
+}
+
+@keyframes inleggen {
+  0%   { transform: rotate(var(--start-rot)) scale(0.85); }
+  60%  { transform: rotate(3deg) scale(1.04); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.puzzel-stuk.inleggen { animation: inleggen 0.35s ease forwards; }
+
+/* Voorbeeld overlay */
+.voorbeeld-overlay {
+  position: absolute;
+  z-index: 50;
+  overflow: hidden;
+  border: 2px solid var(--accent);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.85);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+#voorbeeld-img {
+  display: block;
+  position: relative;
+}
+
+/* ── GAMEOVER ── */
+.gameover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,17,23,0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.gameover-kaart {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 60px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.gameover-kaart h2 { font-size: 56px; font-weight: 800; }
+
+/* ── UTILS ── */
+.verborgen { display: none !important; }
