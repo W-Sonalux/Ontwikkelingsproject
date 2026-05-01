@@ -5,16 +5,15 @@
 }
 
 :root {
-  --bg:           #0d1117;
-  --surface:      #161b22;
-  --surface-hover:#1c2128;
-  --accent:       #58a6ff;
-  --text:         #e6edf3;
-  --text-muted:   #8b949e;
-  --border:       #30363d;
+  --bg:           #0e0d06;
+  --surface:      #1a1a1a;
+  --surface-hover:#222222;
+  --accent:       #FF6A00;
+  --text:         #ffffff;
+  --text-muted:   rgba(255,255,255,0.45);
+  --border:       #2a2a2a;
   --success:      #3fb950;
-  --warning:      #d29922;
-  --radius:       24px;
+  --radius:       20px;
 }
 
 html, body {
@@ -27,54 +26,49 @@ html, body {
   user-select: none;
 }
 
-/* ── ACHTERGROND DECORATIE ── */
-body::before {
-  content: '';
+/* ── FAVICON FLOAT ── */
+.favicon-float {
   position: fixed;
-  top: -200px;
-  left: -200px;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(88,166,255,0.06) 0%, transparent 70%);
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  opacity: 0.15;
   pointer-events: none;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  bottom: -200px;
-  right: -200px;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(63,185,80,0.06) 0%, transparent 70%);
-  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  filter: drop-shadow(0 0 8px rgba(255,106,0,0.9)) drop-shadow(0 0 20px rgba(255,106,0,0.5));
 }
 
 /* ── HEADER ── */
 header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 80px;
   height: 110px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(22, 27, 34, 0.8);
-  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--accent);
   position: relative;
   z-index: 10;
+  gap: 32px;
 }
 
-.logo {
-  font-size: 44px;
-  font-weight: 800;
-  letter-spacing: 10px;
-  color: var(--text);
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
 }
 
 /* ── MODE SWITCH ── */
 .mode-switch {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  margin-left: auto;
   background: var(--surface);
   padding: 8px;
   border-radius: 50px;
@@ -88,21 +82,36 @@ header {
   border-radius: 50px;
   padding: 14px 32px;
   font-size: 20px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
-  font-weight: 600;
+  letter-spacing: 0.3px;
+  position: relative;
 }
 
 .mode-btn:hover {
   color: var(--text);
-  background: var(--surface-hover);
+  background: rgba(255,255,255,0.06);
 }
 
 .mode-btn.active {
   background: var(--accent);
-  color: #0d1117;
-  font-weight: 700;
-  box-shadow: 0 4px 20px rgba(88,166,255,0.3);
+  color: #111111;
+  font-weight: 800;
+  box-shadow: 0 4px 20px rgba(255,106,0,0.4);
+}
+
+/* Punt onder actieve knop */
+.mode-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
 }
 
 /* ── MAIN ── */
@@ -112,24 +121,27 @@ main {
   align-items: center;
   justify-content: center;
   height: calc(1080px - 110px);
-  gap: 50px;
-  padding: 50px 120px;
+  gap: 48px;
+  padding: 40px 80px;
+  position: relative;
+  z-index: 1;
 }
 
 /* ── STATUS BAR ── */
 .status-bar {
-  font-size: 28px;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--text-muted);
   text-align: center;
-  min-height: 40px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  min-height: 32px;
 }
 
 /* ── GAMES GRID ── */
 .games-grid {
   display: flex;
-  gap: 32px;
+  gap: 28px;
   justify-content: center;
   align-items: stretch;
   width: 100%;
@@ -138,108 +150,112 @@ main {
 /* ── GAME CARD ── */
 .game-card {
   background: var(--surface);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   flex: 1;
-  max-width: 320px;
-  min-height: 420px;
+  max-width: 300px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 16px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: hidden;
 }
 
-/* Subtiele gloed bovenaan elke kaart */
-.game-card::before {
+.game-card::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  background: var(--accent);
   opacity: 0;
-  transition: opacity 0.25s;
+  transition: opacity 0.2s;
 }
 
-.game-card:hover::before {
-  opacity: 1;
-}
+.game-card:hover::after    { opacity: 1; }
+.game-card.voted::after    { opacity: 1; }
+.game-card.selected::after { opacity: 1; background: var(--success); }
 
 .game-card:hover {
   border-color: var(--accent);
   background: var(--surface-hover);
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(88,166,255,0.15);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(255,106,0,0.15);
 }
 
 .game-card.voted {
   border-color: var(--accent);
-  background: rgba(88, 166, 255, 0.08);
-  box-shadow: 0 0 30px rgba(88,166,255,0.2);
-}
-
-.game-card.voted::before {
-  opacity: 1;
+  background: rgba(255,106,0,0.08);
+  box-shadow: 0 0 30px rgba(255,106,0,0.2);
 }
 
 .game-card.selected {
   border-color: var(--success);
-  background: rgba(63, 185, 80, 0.08);
+  background: rgba(63,185,80,0.08);
   box-shadow: 0 0 30px rgba(63,185,80,0.2);
 }
 
 .game-card.disabled {
-  opacity: 0.3;
   cursor: not-allowed;
   pointer-events: none;
   transform: none;
-  filter: grayscale(0.5);
+  filter: grayscale(0.6);
+}
+
+.game-card.disabled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 13, 6, 0.78);
+  border-radius: var(--radius);
+  z-index: 2;
 }
 
 .game-icon {
-  font-size: 90px;
+  font-size: 80px;
   line-height: 1;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
 }
 
 .game-card:hover .game-icon {
-  transform: scale(1.15) rotate(-3deg);
+  transform: scale(1.2) rotate(-4deg);
 }
 
 .game-card h2 {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 900;
   color: var(--text);
   text-align: center;
+  letter-spacing: -0.5px;
 }
 
 .game-card p {
-  font-size: 19px;
+  font-size: 17px;
   color: var(--text-muted);
   text-align: center;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
 /* ── OVERLAY ── */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(13, 17, 23, 0.96);
+  background: rgba(14, 13, 6, 0.97);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 28px;
   z-index: 100;
   animation: fadeIn 0.3s ease;
 }
+
+.overlay.verborgen { display: none; }
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -252,17 +268,21 @@ main {
 }
 
 @keyframes popIn {
-  from { transform: scale(0.5); opacity: 0; }
+  from { transform: scale(0.4); opacity: 0; }
   to   { transform: scale(1);   opacity: 1; }
 }
 
 .overlay-title {
-  font-size: 68px;
-  font-weight: 800;
+  font-size: 72px;
+  font-weight: 900;
   color: var(--text);
+  letter-spacing: -3px;
 }
 
 .overlay-sub {
-  font-size: 32px;
+  font-size: 28px;
   color: var(--text-muted);
+  font-weight: 500;
 }
+
+.verborgen { display: none !important; }
