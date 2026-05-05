@@ -91,8 +91,13 @@ socket.on('gameChosen', (game) => {
   bgMuziek.currentTime = 0;
   toonOverlay(game);
   setTimeout(() => {
-    window.location.href = GAME_URLS[game] + '?speler=' + player;
-  }, 2000);
+    // Fade-out vlak voor de redirect
+    document.body.style.transition = 'opacity 0.3s ease';
+    document.body.style.opacity    = '0';
+    setTimeout(() => {
+      window.location.href = GAME_URLS[game] + '?speler=' + player;
+    }, 300);
+  }, 1700);
 });
 
 // ── HELPERS ──
@@ -131,16 +136,30 @@ function setStatus(msg) {
 
 function toonOverlay(game) {
   const namen = {
-    'memory':        '🧠 Memory',
-    'four-in-a-row': '🔴 4 op een rij',
-    'stokvangen':    '🪵 Stokvangen',
-    'puzzel':        '🧩 Puzzel',
-    'kleurenflits':  '🌈 Kleurenflits',  // ← toegevoegd
+    'memory':        'Memory',
+    'four-in-a-row': '4 op een rij',
+    'stokvangen':    'Stokvangen',
+    'puzzel':        'Puzzel',
+    'kleurenflits':  'Kleurenflits',
   };
+  const iconen = {
+    'memory':        '/media/memory.png',
+    'four-in-a-row': '/media/4-op-een-rij.png',
+    'stokvangen':    '/media/stokvangen.png',
+    'puzzel':        '/media/puzzel.png',
+    'kleurenflits':  '/media/kleurenflits.png',
+  };
+
   const overlay = document.createElement('div');
   overlay.className = 'overlay';
   overlay.innerHTML = `
-    <div class="overlay-icon">🎮</div>
+    <img 
+      src="${iconen[game]}" 
+      alt="${namen[game]}"
+      style="width:160px; height:160px; object-fit:contain; 
+             filter: drop-shadow(0 0 30px rgba(255,106,0,0.6));
+             animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);"
+    />
     <h2 class="overlay-title">${namen[game]}</h2>
     <p class="overlay-sub">Het spel start zo...</p>
   `;
