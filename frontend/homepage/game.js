@@ -1,3 +1,7 @@
+// ─── Reset pagina opacity na terugkeer ───────────────────────────
+document.body.style.transition = 'none';
+document.body.style.opacity    = '1';
+
 const socket    = io('/homepage');
 const player    = document.body.dataset.player;
 localStorage.setItem('sozzialSpeler', player);
@@ -9,7 +13,7 @@ const GAME_URLS = {
   'four-in-a-row': '/four-in-a-row',
   'stokvangen':    '/stokvangen',
   'puzzel':        '/puzzel',
-  'kleurenflits':  '/kleurenflits',   // ← toegevoegd
+  'kleurenflits':  '/kleurenflits',
 };
 
 const statusBar = document.getElementById('status-bar');
@@ -46,7 +50,7 @@ function speelGeluid(bestand) {
 // ── Mode switch — alleen speler 1 ──
 modeBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    speelGeluid('knop.mp3');
+    speelGeluid('Knop_01');
     socket.emit('setMode', btn.dataset.mode);
   });
 });
@@ -54,7 +58,7 @@ modeBtns.forEach(btn => {
 // ── Kaart klikken ──
 gameCards.forEach(card => {
   card.addEventListener('click', () => {
-    speelGeluid('knop.mp3');
+    speelGeluid('Knop_01.mp3');
     socket.emit('chooseGame', { player, game: card.dataset.game });
   });
 });
@@ -91,7 +95,6 @@ socket.on('gameChosen', (game) => {
   bgMuziek.currentTime = 0;
   toonOverlay(game);
   setTimeout(() => {
-    // Fade-out vlak voor de redirect
     document.body.style.transition = 'opacity 0.3s ease';
     document.body.style.opacity    = '0';
     setTimeout(() => {
@@ -99,6 +102,46 @@ socket.on('gameChosen', (game) => {
     }, 300);
   }, 1700);
 });
+
+// ─── Verbinding verloren ──────────────────────────────────────────
+
+socket.on('disconnect', () => {
+  toonVerbindingsOverlay();
+});
+
+socket.on('connect', () => {
+  verbergVerbindingsOverlay();
+});
+
+socket.io.on('reconnect_attempt', (poging) => {
+  const el = document.getElementById('verbinding-tekst');
+  if (el) el.textContent = `Opnieuw verbinden... (poging ${poging})`;
+});
+
+socket.io.on('reconnect_failed', () => {
+  const el = document.getElementById('verbinding-tekst');
+  if (el) el.textContent = 'Verbinding mislukt — ververs de pagina.';
+});
+
+function toonVerbindingsOverlay() {
+  if (document.getElementById('verbinding-overlay')) return;
+
+  const overlay = document.createElement('div');
+  overlay.id        = 'verbinding-overlay';
+  overlay.className = 'verbinding-overlay';
+  overlay.innerHTML = `
+    <div class="verbinding-inhoud">
+      <div class="verbinding-spinner"></div>
+      <h2>Verbinding kwijt</h2>
+      <p id="verbinding-tekst">Opnieuw verbinden...</p>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function verbergVerbindingsOverlay() {
+  const overlay = document.getElementById('verbinding-overlay');
+  if (overlay) overlay.remove();
+}
 
 // ── HELPERS ──
 
