@@ -1,17 +1,16 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #0d1117;
-  --surface:  #161b22;
-  --surface2: #21262d;
-  --accent:   #58a6ff;
-  --success:  #3fb950;
-  --warning:  #d29922;
-  --danger:   #f85149;
-  --text:     #e6edf3;
-  --muted:    #8b949e;
-  --border:   #30363d;
-  --radius:   16px;
+  --bg:           #0e0d06;
+  --surface:      #1a1a1a;
+  --surface-hover:#222222;
+  --accent:       #FF6A00;
+  --text:         #ffffff;
+  --text-muted:   rgba(255,255,255,0.45);
+  --border:       #2a2a2a;
+  --success:      #3fb950;
+  --danger:       #f85149;
+  --radius:       20px;
 }
 
 html, body {
@@ -28,20 +27,25 @@ html, body {
 header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 60px;
-  height: 100px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
+  padding: 0 80px;
+  height: 110px;
+  border-bottom: 2px solid var(--accent);
+  position: relative;
+  z-index: 10;
+  gap: 32px;
   flex-shrink: 0;
 }
 
-.logo {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: 8px;
-  color: var(--text);
-  flex: 1;
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
 }
 
 .header-midden {
@@ -49,51 +53,65 @@ header {
   align-items: center;
   justify-content: center;
   flex: 1;
+  gap: 18px;
+}
+
+.spel-icoon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255,106,0,0.5));
 }
 
 .spel-naam {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--muted);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
 }
 
 .header-knoppen {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
   justify-content: flex-end;
-  flex: 1;
 }
 
 .header-knop {
   background: var(--accent);
-  color: #0d1117;
+  color: #111111;
   border: none;
   border-radius: 50px;
-  padding: 14px 40px;
-  font-size: 22px;
-  font-weight: 700;
+  padding: 14px 36px;
+  font-size: 20px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(255,106,0,0.3);
 }
 
-.header-knop:hover:not(:disabled) { transform: scale(1.04); }
-.header-knop:disabled { opacity: 0.3; cursor: not-allowed; }
+.header-knop:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 28px rgba(255,106,0,0.5);
+}
 
 .header-knop.secondary {
-  background: var(--surface2);
+  background: var(--surface);
   color: var(--text);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
+  box-shadow: none;
 }
 
 .header-knop.secondary:hover {
   border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: none;
 }
 
 /* ── WACHTSCHERM ── */
 .wacht-scherm {
   width: 1920px;
-  height: calc(1080px - 100px);
+  height: calc(1080px - 110px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,33 +121,37 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
 }
 
-.wacht-emoji {
-  font-size: 120px;
-  animation: pulse 1.5s infinite;
+.wacht-icoon {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 30px rgba(255,106,0,0.5));
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.1); }
+  0%, 100% { transform: scale(1);     filter: drop-shadow(0 0 20px rgba(255,106,0,0.4)); }
+  50%       { transform: scale(1.08); filter: drop-shadow(0 0 40px rgba(255,106,0,0.7)); }
 }
 
 .wacht-inhoud h1 {
   font-size: 64px;
-  font-weight: 800;
+  font-weight: 900;
+  letter-spacing: -2px;
 }
 
 .wacht-inhoud p {
-  font-size: 32px;
-  color: var(--muted);
+  font-size: 28px;
+  color: var(--text-muted);
 }
 
 /* ── SPELINHOUD ── */
 .spel-inhoud {
   width: 1920px;
-  height: calc(1080px - 100px);
+  height: calc(1080px - 110px);
   display: flex;
   align-items: stretch;
 }
@@ -138,15 +160,14 @@ header {
 
 /* ── SPELER PANELEN ── */
 .speler-paneel {
-  width: 220px;
+  width: 240px;
   flex-shrink: 0;
   background: var(--surface);
   border-right: 2px solid var(--border);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
+  justify-content: flex-end;
   padding: 40px 20px;
   transition: border-color 0.3s, background 0.3s;
 }
@@ -158,37 +179,66 @@ header {
 
 .speler-paneel.actief {
   border-color: var(--accent);
-  background: rgba(88,166,255,0.06);
+  background: rgba(255,106,0,0.04);
 }
 
-.speler-paneel.jij {
-  border-color: var(--success);
+/* ── TOREN SCORE ── */
+.toren-score {
+  font-size: 80px;
+  font-weight: 900;
+  color: var(--text-muted);
+  line-height: 1;
+  margin-bottom: 16px;
+  transition: font-size 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 0.3s;
 }
 
-.speler-paneel.actief.jij {
-  border-color: var(--accent);
+.speler-paneel.actief .toren-score {
+  color: var(--accent);
+  font-size: 96px;
 }
 
-.speler-naam {
-  font-size: 22px;
+/* ── TOREN BALK ── */
+.toren-balk {
+  width: 80px;
+  min-height: 4px;
+  max-height: var(--balk-max, 600px);
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(180deg, #333, #222);
+  transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.3s;
+}
+
+.speler-paneel.actief .toren-balk {
+  background: linear-gradient(180deg, var(--accent), rgba(255,106,0,0.2));
+  box-shadow: 0 -8px 30px rgba(255,106,0,0.3);
+}
+
+/* ── TOREN NAAM ── */
+.toren-naam {
+  font-size: 18px;
   font-weight: 700;
-  color: var(--muted);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 16px;
   text-align: center;
 }
 
-.speler-score {
-  font-size: 80px;
-  font-weight: 800;
-  color: var(--accent);
-  line-height: 1;
+.speler-paneel.actief .toren-naam {
+  color: var(--text);
 }
 
+/* ── BEURT INDICATOR ── */
 .beurt-indicator {
-  font-size: 18px;
+  font-size: 13px;
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   opacity: 0;
   transition: opacity 0.3s;
+  margin-top: 8px;
 }
 
 .speler-paneel.actief .beurt-indicator {
@@ -202,7 +252,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 28px;
   padding: 32px;
 }
 
@@ -211,7 +261,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 60px;
+  gap: 80px;
   width: 100%;
 }
 
@@ -223,29 +273,51 @@ header {
 }
 
 .stat-label {
-  font-size: 20px;
-  color: var(--muted);
+  font-size: 18px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
 }
 
 .stat-waarde {
-  font-size: 36px;
-  font-weight: 800;
+  font-size: 40px;
+  font-weight: 900;
   color: var(--accent);
 }
 
 /* ── BERICHT ── */
 .bericht {
-  padding: 12px 32px;
+  padding: 14px 40px;
   border-radius: 50px;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   transition: opacity 0.3s;
+  min-width: 300px;
+  text-align: center;
 }
 
 .bericht.verborgen { opacity: 0; pointer-events: none; }
-.bericht.match  { background: rgba(63,185,80,0.15);  border: 2px solid var(--success); color: var(--success); }
-.bericht.fout   { background: rgba(248,81,73,0.15);  border: 2px solid var(--danger);  color: var(--danger);  }
-.bericht.info   { background: rgba(88,166,255,0.15); border: 2px solid var(--accent);  color: var(--accent);  }
+
+.bericht.match {
+  background: rgba(63,185,80,0.12);
+  border: 2px solid var(--success);
+  color: var(--success);
+}
+
+.bericht.fout {
+  background: rgba(255,106,0,0.10);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+.bericht.info {
+  background: rgba(255,255,255,0.05);
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+}
 
 /* ── SPEELVELD ── */
 .speelveld {
@@ -295,15 +367,23 @@ header {
 
 .kaart-voor {
   background: var(--surface);
-  font-size: 2rem;
 }
 
 .kaart-voor::after {
-  content: '🧠';
+  content: '';
+  display: block;
+  width: 52px;
+  height: 52px;
+  background-image: url('/media/FAVICON.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 8px rgba(255,106,0,0.4));
 }
 
 .kaart-achter {
-  background: var(--surface2);
+  background: var(--surface-hover);
   transform: rotateY(180deg);
   flex-direction: column;
   gap: 6px;
@@ -311,38 +391,31 @@ header {
 }
 
 .dier-emoji {
-  font-size: 2.4rem;
+  font-size: var(--emoji-grootte, 3.6rem);
   line-height: 1;
 }
 
 .dier-naam {
   font-size: 0.6rem;
   font-weight: 700;
-  color: var(--muted);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .kaart.gevonden .kaart-achter {
-  background: rgba(63,185,80,0.12);
+  background: rgba(63,185,80,0.10);
   border-color: var(--success);
-  border-width: 2px;
 }
 
-.kaart.joker .kaart-achter {
-  background: rgba(210,153,34,0.15);
-  border-color: var(--warning);
-  cursor: default;
-}
-
-.kaart:not(.gevonden):not(.omgedraaid):not(.joker):not(.geblokkeerd):hover .kaart-inner {
+.kaart:not(.gevonden):not(.omgedraaid):not(.geblokkeerd):hover .kaart-inner {
   transform: rotateY(15deg) translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 32px rgba(88,166,255,0.3);
+  box-shadow: 0 12px 32px rgba(255,106,0,0.25);
 }
 
 .kaart.geblokkeerd {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 @keyframes matchFlits {
@@ -355,56 +428,35 @@ header {
   animation: matchFlits 0.6s ease forwards;
 }
 
-/* ── KNOPPEN (in overlay) ── */
-.start-knop {
-  background: var(--accent);
-  color: #0d1117;
-  border: none;
-  border-radius: 50px;
-  padding: 18px 60px;
-  font-size: 24px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.start-knop:hover { transform: scale(1.04); }
-.start-knop:disabled { opacity: 0.3; cursor: not-allowed; }
-
-.start-knop.secondary {
-  background: var(--surface2);
-  color: var(--text);
-  border: 2px solid var(--border);
-  margin-top: 12px;
-}
-
-.start-knop.secondary:hover {
-  border-color: var(--accent);
-}
-
 /* ── WINNAAR OVERLAY ── */
 .winnaar-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(13,17,23,0.92);
+  background: rgba(14,13,6,0.95);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  animation: fadeIn 0.3s ease;
 }
 
 .winnaar-overlay.verborgen { display: none; }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .winnaar-kaart {
   background: var(--surface);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: 24px;
   padding: 60px 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  animation: popIn 0.4s ease;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes popIn {
@@ -416,7 +468,8 @@ header {
 
 .winnaar-kaart h2 {
   font-size: 56px;
-  font-weight: 800;
+  font-weight: 900;
+  letter-spacing: -2px;
 }
 
 .eind-scores {
@@ -430,93 +483,132 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 24px;
-  background: var(--surface2);
+  padding: 14px 28px;
+  background: var(--surface-hover);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 24px;
+  font-weight: 700;
+}
+
+/* ── ACTIE KNOPPEN (overlay) ── */
+.actie-knop {
+  background: var(--accent);
+  color: #111111;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 60px;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(255,106,0,0.3);
+  width: 100%;
+}
+
+.actie-knop:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 28px rgba(255,106,0,0.5);
+}
+
+.actie-knop.secondary {
+  background: var(--surface-hover);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.actie-knop.secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: none;
+  transform: scale(1.02);
 }
 
 /* ── GRID KEUZE OVERLAY ── */
 .grid-keuze-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(13,17,23,0.92);
+  background: rgba(14,13,6,0.95);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  animation: fadeIn 0.3s ease;
 }
 
-.grid-keuze-overlay.verborgen {
-  display: none;
-}
+.grid-keuze-overlay.verborgen { display: none; }
 
 .grid-keuze-inhoud {
   background: var(--surface);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: 24px;
   padding: 60px 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  animation: popIn 0.4s ease;
+  gap: 28px;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.grid-keuze-emoji {
-  font-size: 100px;
+.grid-keuze-icoon {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 24px rgba(255,106,0,0.5));
 }
 
 .grid-keuze-inhoud h2 {
-  font-size: 56px;
-  font-weight: 800;
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: -2px;
   color: var(--text);
 }
 
 .grid-keuze-inhoud p {
-  font-size: 24px;
-  color: var(--muted);
+  font-size: 22px;
+  color: var(--text-muted);
 }
 
 .grid-keuze-knoppen {
   display: flex;
-  gap: 2rem;
+  gap: 24px;
   justify-content: center;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .grid-knop {
-  background: var(--surface2);
-  border: 2px solid var(--border);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 3rem;
-  font-size: 2rem;
-  font-weight: 700;
-  transition: all 0.2s;
-  gap: 0.5rem;
+  padding: 32px 48px;
+  font-size: 32px;
+  font-weight: 800;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  gap: 8px;
 }
 
 .grid-knop span {
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--muted);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .grid-knop:hover {
   background: var(--accent);
   border-color: var(--accent);
-  color: #0d1117;
-  transform: scale(1.05);
+  color: #111111;
+  transform: scale(1.06) translateY(-4px);
+  box-shadow: 0 12px 32px rgba(255,106,0,0.3);
 }
 
 .grid-knop:hover span {
-  color: #0d1117;
+  color: #111111;
 }
 
 /* ── UTILS ── */

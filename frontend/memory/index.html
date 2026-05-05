@@ -11,20 +11,23 @@
 
   <!-- Header -->
   <header>
-    <h1 class="logo">SOZZIAL</h1>
+    <div class="logo-wrap">
+      <img src="/media/LOGO.png" class="logo-img" alt="SOZZIAL"/>
+    </div>
     <div class="header-midden">
-      <span class="spel-naam">🧠 Memory</span>
+      <img src="/media/memory.png" class="spel-icoon" alt="Memory"/>
+      <span class="spel-naam">Memory</span>
     </div>
     <div class="header-knoppen">
       <button class="header-knop" onclick="nieuwSpel()">↺ Opnieuw</button>
-      <button class="header-knop secondary" onclick="naarHome()">🏠 Home</button>
+      <button class="header-knop secondary" onclick="naarHome()">← Home</button>
     </div>
   </header>
 
   <!-- Wachtscherm -->
   <div id="wacht-scherm" class="wacht-scherm">
     <div class="wacht-inhoud">
-      <div class="wacht-emoji">🧠</div>
+      <img src="/media/memory.png" class="wacht-icoon" alt="Memory"/>
       <h1>Memory</h1>
       <p>Wachten op tweede speler...</p>
     </div>
@@ -35,9 +38,10 @@
 
     <!-- Linker speler -->
     <div class="speler-paneel" id="speler1-kaart">
-      <div class="speler-naam" id="speler1-naam">Speler 1</div>
-      <div class="speler-score" id="speler1-score">0</div>
-      <div class="beurt-indicator" id="speler1-beurt">🎮 Aan de beurt</div>
+      <div class="toren-score" id="speler1-score">0</div>
+      <div class="toren-balk" id="speler1-balk"></div>
+      <div class="toren-naam" id="speler1-naam">Speler 1</div>
+      <div class="beurt-indicator">Aan de beurt</div>
     </div>
 
     <!-- Midden -->
@@ -50,7 +54,7 @@
         <div id="bericht" class="bericht verborgen"></div>
         <div class="stat">
           <span class="stat-label">Gevonden</span>
-          <span class="stat-waarde" id="paren">0 / 12</span>
+          <span class="stat-waarde" id="paren">0 / 0</span>
         </div>
       </div>
 
@@ -59,9 +63,10 @@
 
     <!-- Rechter speler -->
     <div class="speler-paneel" id="speler2-kaart">
-      <div class="speler-naam" id="speler2-naam">Speler 2</div>
-      <div class="speler-score" id="speler2-score">0</div>
-      <div class="beurt-indicator" id="speler2-beurt">🎮 Aan de beurt</div>
+      <div class="toren-score" id="speler2-score">0</div>
+      <div class="toren-balk" id="speler2-balk"></div>
+      <div class="toren-naam" id="speler2-naam">Speler 2</div>
+      <div class="beurt-indicator">Aan de beurt</div>
     </div>
 
   </div>
@@ -72,8 +77,8 @@
       <div class="winnaar-emoji">🏆</div>
       <h2 id="winnaar-titel">Gewonnen!</h2>
       <div id="eind-scores" class="eind-scores"></div>
-      <button class="start-knop" onclick="nieuwSpel()">↺ Speel Opnieuw</button>
-      <button class="start-knop secondary" onclick="naarHome()">🏠 Terug naar Home</button>
+      <button class="actie-knop" onclick="nieuwSpel()">↺ Speel Opnieuw</button>
+      <button class="actie-knop secondary" onclick="naarHome()">← Terug naar Home</button>
     </div>
   </div>
 

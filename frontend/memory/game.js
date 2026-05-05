@@ -16,7 +16,8 @@ socket.on('verbonden', (data) => {
 socket.on('volzet', (data) => {
   document.getElementById('wacht-scherm').innerHTML = `
     <div class="wacht-inhoud">
-      <div class="wacht-emoji">🚫</div>
+      <div style="font-size:100px">🚫</div>
+      <h1>Spel vol</h1>
       <p>${data.bericht}</p>
     </div>`;
 });
@@ -30,7 +31,7 @@ document.getElementById('speelveld').addEventListener('click', (e) => {
       kaartEl.classList.contains('omgedraaid')  ||
       kaartEl.classList.contains('gevonden')    ||
       spelKlaar) {
-    toonBericht('⏳ Wacht op jouw beurt!', 'info');
+    toonBericht('Niet jouw beurt!', 'info');
     setTimeout(verbergBericht, 1200);
     return;
   }
@@ -70,7 +71,7 @@ socket.on('spelUpdate', (data) => {
 
 // ─── Grid keuze ──────────────────────────────────────────────────
 
-socket.on('gridGekozen', (gridSize) => {
+socket.on('gridGekozen', () => {
   verbergGridKeuze();
 
   if (jouwNummer === 1) {
@@ -94,7 +95,7 @@ function toonGridKeuze() {
   if (jouwNummer === 1) {
     overlay.innerHTML = `
       <div class="grid-keuze-inhoud">
-        <div class="grid-keuze-emoji">🧠</div>
+        <img src="/media/memory.png" class="grid-keuze-icoon" alt="Memory"/>
         <h2>Kies een speelveld</h2>
         <p>Speler 1 kiest de moeilijkheid</p>
         <div class="grid-keuze-knoppen">
@@ -112,7 +113,7 @@ function toonGridKeuze() {
   } else {
     overlay.innerHTML = `
       <div class="grid-keuze-inhoud">
-        <div class="grid-keuze-emoji">⏳</div>
+        <img src="/media/memory.png" class="grid-keuze-icoon" alt="Memory"/>
         <h2>Wachten op Speler 1...</h2>
         <p>Speler 1 kiest het speelveld</p>
       </div>`;
@@ -130,8 +131,8 @@ function verbergGridKeuze() {
 
 socket.on('match', (data) => {
   const tekst = data.speler === jouwNaam
-    ? '🎉 Jij vond een match! +10 punten'
-    : `✨ ${data.speler} vond een match!`;
+    ? 'MATCH! +10 punten 🔥'
+    : `${data.speler} scoort! 💀`;
   toonBericht(tekst, 'match');
 
   if (jouwNummer === 1) {
@@ -144,7 +145,7 @@ socket.on('match', (data) => {
 });
 
 socket.on('geenMatch', () => {
-  toonBericht('❌ Geen match! Beurt wisselt...', 'fout');
+  toonBericht('Geen match — volgende speler!', 'fout');
 
   if (jouwNummer === 1) {
     const foutGeluid = new Audio('/sounds/Hit_03.mp3');
@@ -161,6 +162,7 @@ socket.on('nieuwSpelGestart', () => {
 });
 
 socket.on('spelKlaar', (data) => toonWinnaar(data));
+
 socket.on('fout', (data) => {
   toonBericht(data.bericht, 'fout');
   setTimeout(verbergBericht, 1500);
@@ -169,12 +171,29 @@ socket.on('fout', (data) => {
 // ─── Spelers scorebord ───────────────────────────────────────────
 
 function updateSpelersBord(spelers) {
+  // Bereken beschikbare ruimte in het paneel
+  const paneel      = document.getElementById('speler1-kaart');
+  const paneelHoog  = paneel.clientHeight;
+  const reserveer   = 220; // score + naam + beurt indicator + padding
+  const maxBalkHoog = paneelHoog - reserveer;
+
+  // Max score = totaal paren * 10 punten
+  const maxScore = totaalParen * 10 || 1;
+
   spelers.forEach(speler => {
     const nr    = speler.nummer;
     const kaart = document.getElementById(`speler${nr}-kaart`);
+
     document.getElementById(`speler${nr}-naam`).textContent =
       speler.naam + (speler.naam === jouwNaam ? ' (jij)' : '');
     document.getElementById(`speler${nr}-score`).textContent = speler.score;
+
+    // Balk schaalt naar beschikbare ruimte op basis van score / maxScore
+    const balkEl = document.getElementById(`speler${nr}-balk`);
+    const ratio  = Math.min(speler.score / maxScore, 1);
+    const hoogte = Math.max(4, ratio * maxBalkHoog);
+    balkEl.style.height = hoogte + 'px';
+
     kaart.classList.toggle('actief', speler.aanDeBeurt);
     kaart.classList.toggle('jij',    speler.naam === jouwNaam);
   });
@@ -187,6 +206,10 @@ function renderSpeelveld(kaarten, gridSize) {
 
   if (gridSize) {
     veld.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
+    // Emoji grootte aanpassen aan kaartgrootte
+    const emojiGrootte = gridSize <= 2 ? '5rem' : gridSize <= 4 ? '3.6rem' : '2.2rem';
+    document.documentElement.style.setProperty('--emoji-grootte', emojiGrootte);
   }
 
   if (veld.children.length !== kaarten.length) {
