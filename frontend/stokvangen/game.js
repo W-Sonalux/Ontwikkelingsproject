@@ -1,6 +1,10 @@
+window.addEventListener('pageshow', () => {
+  document.body.style.transition = 'none';
+  document.body.style.opacity    = '1';
+});
+
 const socket = io('/stokvangen');
 
-// ── DOM ──────────────────────────────────────────────────────────
 const wachtScherm       = document.getElementById('wacht-scherm');
 const spelInhoud        = document.getElementById('spel-inhoud');
 const winnaarOverlay    = document.getElementById('winnaar-overlay');
@@ -17,7 +21,6 @@ const winnerMsg         = document.getElementById('winner-msg');
 const finalScores       = document.getElementById('final-scores');
 const overlayIcon       = document.getElementById('overlay-icon');
 
-// ── SPELSTATUS ───────────────────────────────────────────────────
 let myRole              = null;
 let throwerId           = null;
 let catcherId           = null;
@@ -26,6 +29,10 @@ let catchingEnabled     = false;
 let currentFallingIndex = null;
 const playerRoles       = {};
 const selectorResults   = {};
+
+// ── DOM helpers ───────────────────────────────────────────────────
+function getSelector(i) { return playArea.querySelector(`.selector[data-index="${i}"]`); }
+function getStick(i)    { return playArea.querySelector(`.stick[data-index="${i}"]`);    }
 
 // ── GELUID ───────────────────────────────────────────────────────
 function speelGeluid(bestand) {
@@ -40,81 +47,70 @@ function toonSpel() {
   spelInhoud.classList.remove('verborgen');
   winnaarOverlay.classList.add('verborgen');
 }
-
 function toonWacht() {
   wachtScherm.classList.remove('verborgen');
   spelInhoud.classList.add('verborgen');
   winnaarOverlay.classList.add('verborgen');
 }
+function toonOverlay() { winnaarOverlay.classList.remove('verborgen'); }
 
-function toonOverlay() {
-  winnaarOverlay.classList.remove('verborgen');
-}
-
-// ── HELPERS ──────────────────────────────────────────────────────
-
-// Geeft de selector el voor een index
-function getSelector(i) {
-  return playArea.querySelector(`.selector[data-index="${i}"]`);
-}
-
-// Geeft de stick el voor een index
-function getStick(i) {
-  return playArea.querySelector(`.stick[data-index="${i}"]`);
-}
-
-function resetSelectors(theirSticks) {
+// ── RESET ────────────────────────────────────────────────────────
+// theirSticks = de stokken die gegooid kunnen worden (wat jij als gooier kiest)
+// mySticks    = jouw eigen stokken die kunnen vallen (jij vangt deze)
+// Beide sets zijn 5 stuks — de selector + stick per kolom heeft dual purpose:
+//   - gooier: selector is klikbaar
+//   - vanger: stick is klikbaar als hij valt
+function resetAlles(mySticks, theirSticks) {
   for (let i = 0; i < 5; i++) {
-    const dot = getSelector(i);
-    if (!dot) continue;
-    dot.className = 'selector';
-    if (selectorResults[i]) {
-      dot.classList.add(selectorResults[i]);
-    } else if (!theirSticks[i]) {
-      dot.classList.add('used');
+    const stick = getStick(i);
+    const dot   = getSelector(i);
+
+    // Stok: laat de staat zien van MIJN stokken (vanger perspectief)
+    if (stick) {
+      stick.className       = mySticks[i] ? 'stick' : 'stick shadow';
+      stick.style.transform = 'none';
+      stick.classList.remove('catchable');
+      stick.removeEventListener('click',      onCatchStick);
+      stick.removeEventListener('touchstart', onCatchStick);
+    }
+
+    // Selector: laat staat zien van HUN stokken (gooier perspectief)
+    if (dot) {
+      dot.className = 'selector';
+      if (selectorResults[i])   dot.classList.add(selectorResults[i]);
+      else if (!theirSticks[i]) dot.classList.add('used');
     }
   }
 }
 
-function resetSticks() {
-  for (let i = 0; i < 5; i++) {
-    const stick = getStick(i);
-    if (!stick) continue;
-    stick.className = 'stick';
-    stick.style.transform = 'none';
-  }
-}
-
+// ── SCORES ───────────────────────────────────────────────────────
 function updateScores(scores) {
   scoreP1.textContent = scores.player1;
   scoreP2.textContent = scores.player2;
+  const maxScore = 5;
+  const balk1    = document.getElementById('speler1-balk');
+  const balk2    = document.getElementById('speler2-balk');
+  if (balk1) balk1.style.height = Math.max(4, (scores.player1 / maxScore) * 300) + 'px';
+  if (balk2) balk2.style.height = Math.max(4, (scores.player2 / maxScore) * 300) + 'px';
 }
 
 function highlightThrower(throwerId_) {
-  scoreBoxP1.classList.remove('active-player');
-  scoreBoxP2.classList.remove('active-player');
+  scoreBoxP1.classList.remove('actief');
+  scoreBoxP2.classList.remove('actief');
   const role = playerRoles[throwerId_];
-  if (role === 'player1') scoreBoxP1.classList.add('active-player');
-  else if (role === 'player2') scoreBoxP2.classList.add('active-player');
+  if (role === 'player1')      scoreBoxP1.classList.add('actief');
+  else if (role === 'player2') scoreBoxP2.classList.add('actief');
 }
 
-function shadowStick(stickIndex) {
-  const stick = getStick(stickIndex);
-  if (!stick) return;
-  stick.className = 'stick shadow';
-  stick.style.transform = 'none';
-}
-
+// ── SELECTORS (gooier kiest) ──────────────────────────────────────
 function enableSelectors() {
   for (let i = 0; i < 5; i++) {
     const dot = getSelector(i);
     if (!dot) continue;
-    if (dot.classList.contains('caught') ||
-        dot.classList.contains('missed') ||
-        dot.classList.contains('thrown') ||
-        dot.classList.contains('used')) continue;
+    if (dot.classList.contains('caught') || dot.classList.contains('missed') ||
+        dot.classList.contains('thrown') || dot.classList.contains('used')) continue;
     dot.classList.add('active');
-    dot.addEventListener('click', onSelectStick);
+    dot.addEventListener('click',      onSelectStick);
     dot.addEventListener('touchstart', onSelectStick, { passive: true });
   }
 }
@@ -124,12 +120,13 @@ function disableSelectors() {
     const dot = getSelector(i);
     if (!dot) continue;
     dot.classList.remove('active');
-    dot.removeEventListener('click', onSelectStick);
+    dot.removeEventListener('click',      onSelectStick);
     dot.removeEventListener('touchstart', onSelectStick);
   }
 }
 
 function onSelectStick(e) {
+  speelGeluid('Knop_01.mp3');
   const index = parseInt(e.currentTarget.dataset.index);
   disableSelectors();
   const dot = getSelector(index);
@@ -137,13 +134,14 @@ function onSelectStick(e) {
   socket.emit('throwStick', index);
 }
 
+// ── VANGEN ───────────────────────────────────────────────────────
 function enableCatching(stickIndex) {
-  catchingEnabled = true;
+  catchingEnabled     = true;
   currentFallingIndex = stickIndex;
   const stick = getStick(stickIndex);
   if (!stick) return;
   stick.classList.add('catchable');
-  stick.addEventListener('click', onCatchStick);
+  stick.addEventListener('click',      onCatchStick);
   stick.addEventListener('touchstart', onCatchStick, { passive: true });
 }
 
@@ -153,9 +151,10 @@ function disableCatching() {
   const stick = getStick(currentFallingIndex);
   if (stick) {
     stick.classList.remove('catchable');
-    stick.removeEventListener('click', onCatchStick);
+    stick.removeEventListener('click',      onCatchStick);
     stick.removeEventListener('touchstart', onCatchStick);
   }
+  currentFallingIndex = null;
 }
 
 function onCatchStick() {
@@ -165,9 +164,16 @@ function onCatchStick() {
   socket.emit('catchStick');
 }
 
+function shadowStick(stickIndex) {
+  const stick = getStick(stickIndex);
+  if (!stick) return;
+  stick.className       = 'stick shadow';
+  stick.style.transform = 'none';
+}
+
 // ── SOCKET EVENTS ────────────────────────────────────────────────
 socket.on('assignRole', (data) => {
-  myRole = data.role;
+  myRole                 = data.role;
   playerRoles[socket.id] = data.role;
 });
 
@@ -192,19 +198,16 @@ socket.on('gameStart', (data) => {
   if (data.roles) Object.assign(playerRoles, data.roles);
 
   Object.keys(selectorResults).forEach(k => delete selectorResults[k]);
-
-  resetSelectors(data.theirSticks);
-  resetSticks();
+  resetAlles(data.mySticks, data.theirSticks);
   updateScores(data.scores);
   highlightThrower(throwerId);
-  catchingEnabled = false;
+  catchingEnabled     = false;
   currentFallingIndex = null;
   restartBtn.disabled = false;
-
   speelGeluid('Score_03.mp3');
 
   if (isThrower) {
-    statusMsg.textContent = '👆 Jij gooit! Kies een rondje.';
+    statusMsg.textContent = '👆 Jij gooit! Kies een bolletje.';
     enableSelectors();
   } else {
     statusMsg.textContent = '👀 De tegenstander kiest een stok...';
@@ -216,7 +219,7 @@ socket.on('stickThrown', () => {
 });
 
 socket.on('stickFalling', (data) => {
-  currentFallingIndex = data.stickIndex;
+  currentFallingIndex   = data.stickIndex;
   statusMsg.textContent = '🎯 Klik op de vallende stok om hem te vangen!';
   enableCatching(data.stickIndex);
 });
@@ -225,10 +228,7 @@ socket.on('roundResult', (data) => {
   const result = data.caught ? 'caught' : 'missed';
   selectorResults[data.stickIndex] = result;
   const dot = getSelector(data.stickIndex);
-  if (dot) {
-    dot.classList.remove('thrown', 'active');
-    dot.classList.add(result);
-  }
+  if (dot) { dot.classList.remove('thrown', 'active'); dot.classList.add(result); }
   updateScores(data.scores);
   statusMsg.textContent = data.caught
     ? '😮 De tegenstander heeft hem gevangen!'
@@ -253,26 +253,19 @@ socket.on('stickMissed', (data) => {
 });
 
 socket.on('nextRound', (data) => {
-  throwerId = data.throwerId;
-  catcherId = data.catcherId;
-  isThrower = socket.id === throwerId;
-  catchingEnabled = false;
+  throwerId           = data.throwerId;
+  catcherId           = data.catcherId;
+  isThrower           = socket.id === throwerId;
+  catchingEnabled     = false;
   currentFallingIndex = null;
   if (data.roles) Object.assign(playerRoles, data.roles);
+
   updateScores(data.scores);
   highlightThrower(throwerId);
-
-  resetSelectors(data.theirSticks);
-
-  for (let i = 0; i < 5; i++) {
-    const stick = getStick(i);
-    if (!stick || stick.classList.contains('shadow')) continue;
-    stick.classList.remove('catchable');
-    stick.style.transform = 'none';
-  }
+  resetAlles(data.mySticks, data.theirSticks);
 
   if (isThrower) {
-    statusMsg.textContent = '👆 Jij gooit! Kies een rondje.';
+    statusMsg.textContent = '👆 Jij gooit! Kies een bolletje.';
     enableSelectors();
   } else {
     statusMsg.textContent = '👀 De tegenstander kiest een stok...';
@@ -283,46 +276,31 @@ socket.on('gameOver', (data) => {
   updateScores(data.scores);
   speelGeluid('Win_01.mp3');
 
-  let icon = '';
-  let msg  = '';
+  let icon = '', msg = '';
   if (data.winner === 'draw') {
-    icon = '🤝';
-    msg  = 'Gelijkspel!';
+    icon = '🤝'; msg = 'Gelijkspel!';
   } else if (
     (data.winner === 'player1' && myRole === 'player1') ||
     (data.winner === 'player2' && myRole === 'player2')
   ) {
-    icon = '🏆';
-    msg  = 'Jij hebt gewonnen!';
+    icon = '🏆'; msg = 'Jij hebt gewonnen!';
   } else {
-    icon = '😔';
-    msg  = 'Je hebt verloren...';
+    icon = '😔'; msg = 'Je hebt verloren...';
   }
 
   overlayIcon.textContent = icon;
   winnerMsg.textContent   = msg;
   finalScores.innerHTML   = `
-    <div class="score-rij">
-      <span>Speler 1</span>
-      <span>${data.scores.player1} stokken gevangen</span>
-    </div>
-    <div class="score-rij">
-      <span>Speler 2</span>
-      <span>${data.scores.player2} stokken gevangen</span>
-    </div>
+    <div class="score-rij"><span>Speler 1</span><span>${data.scores.player1} stokken gevangen</span></div>
+    <div class="score-rij"><span>Speler 2</span><span>${data.scores.player2} stokken gevangen</span></div>
   `;
-
   toonOverlay();
 });
 
-// ── RESTART ──────────────────────────────────────────────────────
-restartBtn.addEventListener('click', () => socket.emit('restartGame'));
+restartBtn.addEventListener('click',        () => socket.emit('restartGame'));
 restartBtnOverlay.addEventListener('click', () => socket.emit('restartGame'));
 
-// ── NAAR HOME ────────────────────────────────────────────────────
-socket.on('connect', () => {
-  playerRoles[socket.id] = myRole;
-});
+socket.on('connect', () => { playerRoles[socket.id] = myRole; });
 
 socket.on('stuurNaarHome', () => {
   const params = new URLSearchParams(window.location.search);
@@ -330,6 +308,4 @@ socket.on('stuurNaarHome', () => {
   window.location.href = '/' + speler;
 });
 
-function naarHome() {
-  socket.emit('naarHome');
-}
+function naarHome() { socket.emit('naarHome'); }

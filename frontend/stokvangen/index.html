@@ -3,93 +3,89 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=1920"/>
-  <title>Stokvangen</title>
+  <title>SOZZIAL – Stokvangen</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="/stokvangen/style.css"/>
 </head>
 <body>
 
-  <!-- Header -->
   <header>
-    <h1 class="logo">SOZZIAL</h1>
+    <div class="logo-wrap">
+      <img src="/media/LOGO.png" class="logo-img" alt="SOZZIAL"/>
+    </div>
     <div class="header-midden">
-      <span class="spel-naam">🪵 Stokvangen</span>
+      <img src="/media/stokvangen.png" class="spel-icoon" alt="Stokvangen"/>
+      <span class="spel-naam">Stokvangen</span>
     </div>
     <div class="header-knoppen">
       <button id="restart-btn" class="header-knop" disabled>↺ Opnieuw</button>
-      <button class="header-knop secondary" onclick="naarHome()">🏠 Home</button>
+      <button class="header-knop secondary" onclick="naarHome()">← Home</button>
     </div>
   </header>
 
-  <!-- Wachtscherm -->
   <div id="wacht-scherm" class="wacht-scherm">
     <div class="wacht-inhoud">
-      <div class="wacht-emoji">🪵</div>
+      <img src="/media/stokvangen.png" class="wacht-icoon" alt="Stokvangen"/>
       <h1>Stokvangen</h1>
-      <p id="waiting-msg">Wachten op spelers...</p>
-      <p id="player-count">Verbonden: 0 / 2</p>
+      <p id="waiting-msg">Wachten op tweede speler...</p>
+      <p id="player-count" class="wacht-count">Verbonden: 0 / 2</p>
     </div>
   </div>
 
-  <!-- Spelinhoud -->
   <div id="spel-inhoud" class="spel-inhoud verborgen">
 
-    <!-- Speler 1 paneel -->
     <div class="speler-paneel" id="score-p1">
-      <div class="speler-emoji">🪵</div>
-      <div class="speler-naam">Speler 1</div>
-      <div class="speler-score" id="score-p1-val">0</div>
-      <div class="beurt-indicator">● Aan beurt</div>
+      <div class="toren-score" id="score-p1-val">0</div>
+      <div class="toren-balk" id="speler1-balk"></div>
+      <div class="toren-naam">Speler 1</div>
+      <div class="beurt-indicator">Aan de beurt</div>
     </div>
 
-    <!-- Midden -->
     <div class="midden">
       <div class="top-balk">
         <div id="status-msg" class="status-bericht">Verbinden...</div>
       </div>
 
       <div id="play-area">
-        <div class="stok-kolom" data-index="0">
+        <div class="stok-kolom">
           <div class="selector" data-index="0"></div>
           <div class="stick"    data-index="0"></div>
         </div>
-        <div class="stok-kolom" data-index="1">
+        <div class="stok-kolom">
           <div class="selector" data-index="1"></div>
           <div class="stick"    data-index="1"></div>
         </div>
-        <div class="stok-kolom" data-index="2">
+        <div class="stok-kolom">
           <div class="selector" data-index="2"></div>
           <div class="stick"    data-index="2"></div>
         </div>
-        <div class="stok-kolom" data-index="3">
+        <div class="stok-kolom">
           <div class="selector" data-index="3"></div>
           <div class="stick"    data-index="3"></div>
         </div>
-        <div class="stok-kolom" data-index="4">
+        <div class="stok-kolom">
           <div class="selector" data-index="4"></div>
           <div class="stick"    data-index="4"></div>
         </div>
       </div>
     </div>
 
-    <!-- Speler 2 paneel -->
     <div class="speler-paneel" id="score-p2">
-      <div class="speler-emoji">🪵</div>
-      <div class="speler-naam">Speler 2</div>
-      <div class="speler-score" id="score-p2-val">0</div>
-      <div class="beurt-indicator">● Aan beurt</div>
+      <div class="toren-score" id="score-p2-val">0</div>
+      <div class="toren-balk" id="speler2-balk"></div>
+      <div class="toren-naam">Speler 2</div>
+      <div class="beurt-indicator">Aan de beurt</div>
     </div>
 
   </div>
 
-  <!-- Winnaar overlay -->
   <div id="winnaar-overlay" class="winnaar-overlay verborgen">
     <div class="winnaar-kaart">
       <div id="overlay-icon" class="winnaar-emoji"></div>
       <h2 id="winner-msg"></h2>
       <div id="final-scores" class="eind-scores"></div>
-      <button id="restart-btn-overlay" class="start-knop">↺ Opnieuw spelen</button>
-      <button class="start-knop secondary" onclick="naarHome()">🏠 Terug naar Home</button>
+      <button id="restart-btn-overlay" class="actie-knop">↺ Opnieuw spelen</button>
+      <button class="actie-knop secondary" onclick="naarHome()">← Terug naar Home</button>
     </div>
   </div>
 
